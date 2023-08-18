@@ -26,8 +26,6 @@ public abstract class CrudService<T> implements ICrud<T> {
 
         } catch (SQLException e) {
             throw new InternalError();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
         }
     }
 
@@ -53,10 +51,6 @@ public abstract class CrudService<T> implements ICrud<T> {
         state.close();
 
         return result;
-    }
-
-    protected List<String> getById() {
-        return null;
     }
 
 }

@@ -54,4 +54,10 @@ public class CurrencyCrudService extends CrudService<Currency> {
     public Currency get(int id) {
         return null;
     }
+
+    @Override
+    public Currency get(String id) throws InternalError {
+
+        return null;
+    }
 }

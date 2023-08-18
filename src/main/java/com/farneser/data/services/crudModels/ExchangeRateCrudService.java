@@ -36,4 +36,9 @@ public class ExchangeRateCrudService extends CrudService<ExchangeRate> {
     public ExchangeRate get(int id) {
         return null;
     }
+
+    @Override
+    public ExchangeRate get(String id) {
+        return null;
+    }
 }
