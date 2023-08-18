@@ -1,0 +1,158 @@
+{
+	"info": {
+		"name": "CurrencyExchanger",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "/currencies",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"return array or error\", ()=>{",
+							"",
+							"    const body = pm.response.json;",
+							"",
+							"    if (pm.response.status == 500){",
+							"        pm.expect(body.message).have()",
+							"    }",
+							"",
+							"    if (pm.response.status == 200){",
+							"        pm.expect(pm.response.json()).to.be.an('array').but.not.an('object')",
+							"    }",
+							"",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/currencies",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"currencies"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "positive",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/currencies",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"currencies"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 18 Aug 2023 20:27:53 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=20"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"name\": \"US Dollar\",\n        \"code\": \"USD\",\n        \"sign\": \"$\",\n        \"id\": 1\n    },\n    {\n        \"name\": \"Euro\",\n        \"code\": \"EUR\",\n        \"sign\": \"€\",\n        \"id\": 2\n    },\n    {\n        \"name\": \"Russian Ruble\",\n        \"code\": \"RUB\",\n        \"sign\": \"₽\",\n        \"id\": 3\n    },\n    {\n        \"name\": \"Yuan Renminbi\",\n        \"code\": \"CNY\",\n        \"sign\": \"元\",\n        \"id\": 4\n    }\n]"
+				},
+				{
+					"name": "negative",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/currencies",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"currencies"
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 18 Aug 2023 20:29:35 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Database unavailable\"\n}"
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8080/currency_exchange_war",
+			"type": "string"
+		}
+	]
+}

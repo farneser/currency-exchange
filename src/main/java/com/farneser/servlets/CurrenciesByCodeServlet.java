@@ -1,7 +1,8 @@
 package com.farneser.servlets;
 
-import com.farneser.data.exceptions.ValueMissingError;
-import com.farneser.data.exceptions.InternalError;
+import com.farneser.data.exceptions.NotFoundException;
+import com.farneser.data.exceptions.ValueMissingException;
+import com.farneser.data.exceptions.InternalServerException;
 import com.farneser.data.models.ErrorMessage;
 import com.farneser.data.services.AppDbContext;
 import com.google.gson.Gson;
@@ -29,10 +30,12 @@ public class CurrenciesByCodeServlet extends BaseServlet {
             writer.print(new Gson().toJson(currencies.get("code", id)));
             writer.flush();
 
-        } catch (InternalError e) {
+        } catch (InternalServerException e) {
             returnError(resp, ErrorMessage.InternalServerError);
-        } catch (ValueMissingError e) {
+        } catch (ValueMissingException e) {
             returnError(resp, ErrorMessage.CurrencyCodeNotFound);
+        } catch (NotFoundException e) {
+            returnError(resp, ErrorMessage.CurrencyNotFound);
         }
 
     }

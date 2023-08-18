@@ -1,6 +1,6 @@
 package com.farneser.servlets;
 
-import com.farneser.data.exceptions.InternalError;
+import com.farneser.data.exceptions.InternalServerException;
 import com.farneser.data.models.ErrorMessage;
 import com.farneser.data.services.AppDbContext;
 import com.google.gson.Gson;
@@ -25,7 +25,7 @@ public class CurrenciesServlet extends BaseServlet {
             writer.print(new Gson().toJson(currencies.get()));
             writer.flush();
 
-        } catch (InternalError e) {
+        } catch (InternalServerException e) {
             returnError(resp, ErrorMessage.InternalServerError);
         }
 

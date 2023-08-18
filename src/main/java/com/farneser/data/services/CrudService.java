@@ -1,8 +1,8 @@
 package com.farneser.data.services;
 
-import com.farneser.data.exceptions.InternalError;
+import com.farneser.data.exceptions.InternalServerException;
 import com.farneser.data.exceptions.NotFoundException;
-import com.farneser.data.exceptions.ValueMissingError;
+import com.farneser.data.exceptions.ValueMissingException;
 import com.farneser.data.models.BaseEntity;
 
 import java.sql.Connection;
@@ -20,7 +20,7 @@ public abstract class CrudService<T extends BaseEntity> implements ICrud<T> {
         _tableName = tableName;
     }
 
-    protected void create(String execute) throws InternalError {
+    protected void create(String execute) throws InternalServerException {
         try {
             var state = _connection.createStatement();
 
@@ -29,12 +29,12 @@ public abstract class CrudService<T extends BaseEntity> implements ICrud<T> {
             state.close();
 
         } catch (SQLException e) {
-            throw new InternalError();
+            throw new InternalServerException();
         }
     }
 
     @Override
-    public List<T> get() throws InternalError {
+    public List<T> get() throws InternalServerException {
         var result = new ArrayList<T>();
 
         try {
@@ -46,7 +46,7 @@ public abstract class CrudService<T extends BaseEntity> implements ICrud<T> {
             }
 
         } catch (SQLException e) {
-            throw new InternalError();
+            throw new InternalServerException();
         }
 
         return result;
@@ -84,15 +84,15 @@ public abstract class CrudService<T extends BaseEntity> implements ICrud<T> {
     }
 
     @Override
-    public T get(int id) throws InternalError, ValueMissingError, NotFoundException {
+    public T get(int id) throws InternalServerException, ValueMissingException, NotFoundException {
         return get("id", String.valueOf(id));
     }
 
     @Override
-    public T get(String paramName, String value) throws InternalError, ValueMissingError, NotFoundException {
+    public T get(String paramName, String value) throws InternalServerException, ValueMissingException, NotFoundException {
 
         if (value.isEmpty()) {
-            throw new ValueMissingError();
+            throw new ValueMissingException();
         }
 
         try {
@@ -108,7 +108,7 @@ public abstract class CrudService<T extends BaseEntity> implements ICrud<T> {
 
             throw new NotFoundException();
         } catch (SQLException e) {
-            throw new InternalError();
+            throw new InternalServerException();
         }
     }
 }

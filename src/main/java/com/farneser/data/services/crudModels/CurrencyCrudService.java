@@ -1,6 +1,6 @@
 package com.farneser.data.services.crudModels;
 
-import com.farneser.data.exceptions.InternalError;
+import com.farneser.data.exceptions.InternalServerException;
 import com.farneser.data.models.Currency;
 import com.farneser.data.services.CrudService;
 
@@ -14,7 +14,7 @@ public class CurrencyCrudService extends CrudService<Currency> {
     }
 
     @Override
-    public void create(Currency obj) throws InternalError {
+    public void create(Currency obj) throws InternalServerException {
         create("INSERT INTO " + _tableName + " (Code, FullName, Sign) VALUES ('" + obj.getCode() + "', '" + obj.getFullName() + "', '" + obj.getSign() + "');");
     }
 
