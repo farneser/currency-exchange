@@ -1,6 +1,7 @@
 package com.farneser.data.services;
 
 import com.farneser.data.exceptions.InternalError;
+import com.farneser.data.exceptions.NotFoundException;
 import com.farneser.data.exceptions.ValueMissingError;
 import com.farneser.data.models.BaseEntity;
 
@@ -83,12 +84,12 @@ public abstract class CrudService<T extends BaseEntity> implements ICrud<T> {
     }
 
     @Override
-    public T get(int id) throws InternalError, ValueMissingError {
+    public T get(int id) throws InternalError, ValueMissingError, NotFoundException {
         return get("id", String.valueOf(id));
     }
 
     @Override
-    public T get(String paramName, String value) throws InternalError, ValueMissingError {
+    public T get(String paramName, String value) throws InternalError, ValueMissingError, NotFoundException {
 
         if (value.isEmpty()) {
             throw new ValueMissingError();
@@ -97,7 +98,7 @@ public abstract class CrudService<T extends BaseEntity> implements ICrud<T> {
         try {
             var state = _connection.createStatement();
 
-            var queryResult = state.executeQuery("SELECT * FROM " + _tableName + " WHERE " + paramName + "'" + value + "';");
+            var queryResult = state.executeQuery("SELECT * FROM " + _tableName + " WHERE " + paramName + "='" + value + "';");
 
             for (var entity : getValuesFromQuery(queryResult)) {
                 return deserialize(entity);
@@ -105,10 +106,9 @@ public abstract class CrudService<T extends BaseEntity> implements ICrud<T> {
 
             state.close();
 
+            throw new NotFoundException();
         } catch (SQLException e) {
             throw new InternalError();
         }
-
-        return null;
     }
 }

@@ -1,5 +1,6 @@
 package com.farneser.data.services;
 
+import com.farneser.data.exceptions.NotFoundException;
 import com.farneser.data.exceptions.ValueMissingError;
 import com.farneser.data.exceptions.InternalError;
 import com.farneser.data.models.BaseEntity;
@@ -23,7 +24,7 @@ public interface ICrud<T extends BaseEntity> {
      * @throws InternalError     on any server errors (database unavailable for example)
      * @throws ValueMissingError on missing or empty value
      */
-    T get(int id) throws InternalError, ValueMissingError;
+    T get(int id) throws InternalError, ValueMissingError, NotFoundException;
 
     /**
      * get T object by param and value (first or null)
@@ -34,7 +35,7 @@ public interface ICrud<T extends BaseEntity> {
      * @throws InternalError     on any server errors (database unavailable for example)
      * @throws ValueMissingError on missing or empty value
      */
-    T get(String paramName, String value) throws InternalError, ValueMissingError;
+    T get(String paramName, String value) throws InternalError, ValueMissingError, NotFoundException;
 
     T deserialize(List<String> object) throws InternalError;
 }
