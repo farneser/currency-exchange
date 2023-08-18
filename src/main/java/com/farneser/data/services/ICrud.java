@@ -1,6 +1,7 @@
 package com.farneser.data.services;
 
 import com.farneser.data.exceptions.NotFoundException;
+import com.farneser.data.exceptions.UniqueConstraintException;
 import com.farneser.data.exceptions.ValueMissingException;
 import com.farneser.data.exceptions.InternalServerException;
 import com.farneser.data.models.BaseEntity;
@@ -8,7 +9,7 @@ import com.farneser.data.models.BaseEntity;
 import java.util.List;
 
 public interface ICrud<T extends BaseEntity> {
-    T create(T obj) throws InternalServerException;
+    T create(T obj) throws InternalServerException, UniqueConstraintException;
 
     void update(T obj);
 
