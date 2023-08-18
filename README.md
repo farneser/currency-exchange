@@ -15,6 +15,8 @@ REST API для описания валют и обменных курсов. П
 - Веб сервер для запуска War файла [Tomcat 1.1.12](https://tomcat.apache.org/download-10.cgi)
 - Мини веб приложения для расширения или реализации
   функционала [Servlet](https://mvnrepository.com/artifact/jakarta.servlet/jakarta.servlet-api)
+- Описание всех точек апи [docs](/src/main/java/com/farneser/servlets/README.md)
+- Возможно введение простого клиента
 
 ## Что нужно знать
 

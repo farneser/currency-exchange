@@ -26,7 +26,7 @@ public class CurrenciesByCodeServlet extends BaseServlet {
 
             var id = req.getPathInfo().substring(1);
 
-            writer.print(new Gson().toJson(currencies.get(id)));
+            writer.print(new Gson().toJson(currencies.get("code", id)));
             writer.flush();
 
         } catch (InternalError e) {

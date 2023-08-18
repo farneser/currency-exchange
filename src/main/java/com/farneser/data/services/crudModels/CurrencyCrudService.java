@@ -1,6 +1,5 @@
 package com.farneser.data.services.crudModels;
 
-import com.farneser.data.exceptions.ValueMissingError;
 import com.farneser.data.exceptions.InternalError;
 import com.farneser.data.models.Currency;
 import com.farneser.data.services.CrudService;
@@ -27,11 +26,6 @@ public class CurrencyCrudService extends CrudService<Currency> {
     @Override
     public void delete(int id) {
 
-    }
-
-    @Override
-    public Currency get(String id) throws InternalError, ValueMissingError {
-        return get("code", id);
     }
 
     @Override

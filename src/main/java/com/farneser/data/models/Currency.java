@@ -2,23 +2,13 @@ package com.farneser.data.models;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Currency {
-    @SerializedName("id")
-    private int _id;
+public class Currency extends BaseEntity{
     @SerializedName("name")
     private String _fullName;
     @SerializedName("code")
     private String _code;
     @SerializedName("sign")
     private String _sign;
-
-    public int getId() {
-        return _id;
-    }
-
-    public void setId(int id) {
-        _id = id;
-    }
 
     public String getCode() {
         return _code;

@@ -2,6 +2,7 @@ package com.farneser.data.services;
 
 import com.farneser.data.exceptions.InternalError;
 import com.farneser.data.exceptions.ValueMissingError;
+import com.farneser.data.models.BaseEntity;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -9,7 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class CrudService<T> implements ICrud<T> {
+public abstract class CrudService<T extends BaseEntity> implements ICrud<T> {
     protected final Connection _connection;
     protected String _tableName;
 
@@ -84,11 +85,6 @@ public abstract class CrudService<T> implements ICrud<T> {
     @Override
     public T get(int id) throws InternalError, ValueMissingError {
         return get("id", String.valueOf(id));
-    }
-
-    @Override
-    public T get(String id) throws InternalError, ValueMissingError {
-        return get(Integer.parseInt(id));
     }
 
     @Override

@@ -2,11 +2,11 @@ package com.farneser.data.services;
 
 import com.farneser.data.exceptions.ValueMissingError;
 import com.farneser.data.exceptions.InternalError;
+import com.farneser.data.models.BaseEntity;
 
-import java.lang.reflect.Array;
 import java.util.List;
 
-public interface ICrud<T> {
+public interface ICrud<T extends BaseEntity> {
     void create(T obj) throws InternalError;
 
     void update(T obj);
@@ -24,16 +24,6 @@ public interface ICrud<T> {
      * @throws ValueMissingError on missing or empty value
      */
     T get(int id) throws InternalError, ValueMissingError;
-
-    /**
-     * get T object by only id (String)
-     *
-     * @param id define index of searchable object
-     * @return type object or null
-     * @throws InternalError     on any server errors (database unavailable for example)
-     * @throws ValueMissingError on missing or empty value
-     */
-    T get(String id) throws InternalError, ValueMissingError;
 
     /**
      * get T object by param and value (first or null)

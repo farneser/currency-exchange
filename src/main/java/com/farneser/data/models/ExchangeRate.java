@@ -2,19 +2,10 @@ package com.farneser.data.models;
 
 import java.math.BigInteger;
 
-public class ExchangeRate {
-    private int _id;
+public class ExchangeRate extends BaseEntity{
     private int _baseCurrencyId;
     private int _targetCurrencyId;
     private BigInteger _rate;
-
-    public int getId() {
-        return _id;
-    }
-
-    public void setId(int id) {
-        _id = id;
-    }
 
     public int getBaseCurrencyId() {
         return _baseCurrencyId;
