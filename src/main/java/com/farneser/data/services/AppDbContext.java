@@ -26,7 +26,6 @@ public class AppDbContext {
 
             conn = DriverManager.getConnection("jdbc:sqlite:currency.db");
 
-            var state = conn.createStatement();
 
             var inputStream = new InputStreamReader(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("tables.sql")));
 
@@ -36,8 +35,17 @@ public class AppDbContext {
 
             Arrays.stream(reader.lines().toArray()).forEach(l -> line.append(" ").append(l));
 
-            state.execute(line.toString());
-            state.close();
+            var tables = line.toString().split(";");
+
+            for (var table : tables) {
+
+                var state = conn.createStatement();
+
+                state.execute(table);
+
+                state.close();
+            }
+
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
