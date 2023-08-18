@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebServlet("/currencies/*")
+@WebServlet("/currency/*")
 public class CurrenciesByCodeServlet extends BaseServlet {
 
     @Override
@@ -24,6 +24,10 @@ public class CurrenciesByCodeServlet extends BaseServlet {
             var writer = resp.getWriter();
 
             resp.setStatus(HttpServletResponse.SC_OK);
+
+            if (req.getPathInfo() == null){
+                throw new ValueMissingException();
+            }
 
             var id = req.getPathInfo().substring(1);
 

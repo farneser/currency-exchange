@@ -1,10 +1,15 @@
 package com.farneser.data.models;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.math.BigInteger;
 
 public class ExchangeRate extends BaseEntity {
+    @SerializedName("baseCurrency")
     private int _baseCurrencyId;
+    @SerializedName("targetCurrency")
     private int _targetCurrencyId;
+    @SerializedName("rate")
     private BigInteger _rate;
 
     public int getBaseCurrencyId() {
