@@ -1,4 +1,4 @@
-CREATE TABLE Currencies
+CREATE TABLE IF NOT EXISTS Currencies
 (
     ID       INTEGER PRIMARY KEY AUTOINCREMENT,
     Code     VARCHAR(30) NOT NULL,
@@ -8,7 +8,7 @@ CREATE TABLE Currencies
 );
 
 
-CREATE TABLE ExchangeRates
+CREATE TABLE IF NOT EXISTS ExchangeRates
 (
     ID               INTEGER PRIMARY KEY AUTOINCREMENT,
     BaseCurrencyId   INTEGER,
