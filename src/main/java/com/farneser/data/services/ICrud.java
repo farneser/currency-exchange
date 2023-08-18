@@ -8,7 +8,7 @@ import com.farneser.data.models.BaseEntity;
 import java.util.List;
 
 public interface ICrud<T extends BaseEntity> {
-    void create(T obj) throws InternalServerException;
+    T create(T obj) throws InternalServerException;
 
     void update(T obj);
 

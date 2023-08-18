@@ -14,8 +14,8 @@ public class ExchangeRateCrudService extends CrudService<ExchangeRate> {
 
 
     @Override
-    public void create(ExchangeRate obj) {
-
+    public ExchangeRate create(ExchangeRate obj) {
+        return null;
     }
 
     @Override
