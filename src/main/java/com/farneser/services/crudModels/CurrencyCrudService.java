@@ -16,7 +16,7 @@ public class CurrencyCrudService extends CrudService<Currency> {
     }
 
     @Override
-    public void create(Currency obj) {
+    public void create(Currency obj) throws InternalError {
         create("INSERT INTO " + _tableName + " (Code, FullName, Sign) VALUES ('" + obj.getCode() + "', '" + obj.getFullName() + "', '" + obj.getSign() + "');");
     }
 

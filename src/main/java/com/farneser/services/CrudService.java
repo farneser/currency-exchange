@@ -1,5 +1,7 @@
 package com.farneser.services;
 
+import com.farneser.exceptions.InternalError;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -7,18 +9,14 @@ import java.util.List;
 
 public abstract class CrudService<T> implements ICrud<T> {
     protected final Connection _connection;
-    protected String _tableName = null;
-
-    public CrudService(Connection connection) {
-        _connection = connection;
-    }
+    protected String _tableName;
 
     public CrudService(Connection connection, String tableName) {
-        this(connection);
+        _connection = connection;
         _tableName = tableName;
     }
 
-    protected void create(String execute) {
+    protected void create(String execute) throws InternalError {
         try {
             var state = _connection.createStatement();
 
@@ -27,7 +25,9 @@ public abstract class CrudService<T> implements ICrud<T> {
             state.close();
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new InternalError();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
     }
 
@@ -55,7 +55,7 @@ public abstract class CrudService<T> implements ICrud<T> {
         return result;
     }
 
-    protected List<String> getById(){
+    protected List<String> getById() {
         return null;
     }
 

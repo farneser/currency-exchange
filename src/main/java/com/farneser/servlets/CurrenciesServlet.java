@@ -15,7 +15,7 @@ import java.io.*;
 public class CurrenciesServlet extends BaseServlet {
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.addHeader("Content-type", "text/json");
 
         var currencies = AppDbContext.getInstance().currency;
