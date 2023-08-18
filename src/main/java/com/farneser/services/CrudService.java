@@ -1,42 +1,32 @@
 package com.farneser.services;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
-public class CrudService<T> implements ICrud<T> {
+public abstract class CrudService<T> implements ICrud<T> {
     protected final Connection _connection;
     protected String _tableName = null;
+
     public CrudService(Connection connection) {
         _connection = connection;
     }
 
-    public CrudService(Connection connection, String tableName){
+    public CrudService(Connection connection, String tableName) {
         this(connection);
         _tableName = tableName;
     }
 
-    @Override
-    public void create(T obj) {
+    protected void create(String execute) {
+        try {
+            var state = _connection.createStatement();
 
-    }
+            state.execute(execute);
 
-    @Override
-    public void update(T obj) {
+            state.close();
 
-    }
-
-    @Override
-    public void delete(int id) {
-
-    }
-
-    @Override
-    public List<T> get() {
-        return null;
-    }
-
-    @Override
-    public T get(int id) {
-        return null;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
