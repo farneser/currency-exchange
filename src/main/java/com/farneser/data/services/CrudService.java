@@ -2,6 +2,7 @@ package com.farneser.data.services;
 
 import com.farneser.data.exceptions.InternalServerException;
 import com.farneser.data.exceptions.NotFoundException;
+import com.farneser.data.exceptions.UniqueConstraintException;
 import com.farneser.data.exceptions.ValueMissingException;
 import com.farneser.data.models.BaseEntity;
 
@@ -20,15 +21,27 @@ public abstract class CrudService<T extends BaseEntity> implements ICrud<T> {
         _tableName = tableName;
     }
 
-    protected void create(String execute) throws InternalServerException {
+    protected int create(String execute) throws InternalServerException, UniqueConstraintException {
         try {
             var state = _connection.createStatement();
 
-            state.execute(execute);
+            var id = state.executeQuery(execute);
+
+            for (var val: getValuesFromQuery(id)){
+                return Integer.parseInt(val.get(0));
+            }
 
             state.close();
 
+            return 0;
+
         } catch (SQLException e) {
+
+            // 19 - [SQLITE_CONSTRAINT_UNIQUE] A UNIQUE constraint failed
+            if (e.getErrorCode() == 19) {
+                throw new UniqueConstraintException();
+            }
+
             throw new InternalServerException();
         }
     }

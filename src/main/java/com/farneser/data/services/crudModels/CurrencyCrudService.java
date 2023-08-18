@@ -1,6 +1,7 @@
 package com.farneser.data.services.crudModels;
 
 import com.farneser.data.exceptions.InternalServerException;
+import com.farneser.data.exceptions.UniqueConstraintException;
 import com.farneser.data.models.Currency;
 import com.farneser.data.services.CrudService;
 
@@ -14,9 +15,13 @@ public class CurrencyCrudService extends CrudService<Currency> {
     }
 
     @Override
-    public Currency create(Currency obj) throws InternalServerException {
-        create("INSERT INTO " + _tableName + " (Code, FullName, Sign) VALUES ('" + obj.getCode() + "', '" + obj.getFullName() + "', '" + obj.getSign() + "');");
-        return null;
+    public Currency create(Currency obj) throws InternalServerException, UniqueConstraintException {
+
+        var id = create("INSERT INTO " + _tableName + " (Code, FullName, Sign) VALUES ('" + obj.getCode() + "', '" + obj.getFullName() + "', '" + obj.getSign() + "') RETURNING ID;");
+
+        obj.setId(id);
+
+        return obj;
     }
 
     @Override
