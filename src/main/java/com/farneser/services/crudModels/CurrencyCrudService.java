@@ -17,7 +17,7 @@ public class CurrencyCrudService extends CrudService<Currency> {
 
     @Override
     public void create(Currency obj) {
-        create("INSERT INTO " + _tableName + " (Code, FullName, Sign) VALUES ('" + obj.getCode() + "', '" + obj.getFullName() + "', '" + obj.getSing() + "');");
+        create("INSERT INTO " + _tableName + " (Code, FullName, Sign) VALUES ('" + obj.getCode() + "', '" + obj.getFullName() + "', '" + obj.getSign() + "');");
     }
 
     @Override
@@ -32,31 +32,21 @@ public class CurrencyCrudService extends CrudService<Currency> {
 
     @Override
     public List<Currency> get() throws InternalError {
+        var result = new ArrayList<Currency>();
 
         try {
-            var state = _connection.createStatement();
+            var entities = getAll();
 
-            var result = state.executeQuery("SELECT * FROM " + _tableName);
+            for (var entity : entities) {
 
-            var columns = result.getMetaData().getColumnCount();
-
-            while (result.next()) {
-                var line = new ArrayList<String>();
-
-                for (int i = 1; i <= columns; i++) {
-                    line.add(result.getString(i));
-                }
-
-                System.out.println(line);
+                result.add(new Currency(Integer.parseInt(entity.get(0)), entity.get(1), entity.get(2), entity.get(3)));
             }
-            state.close();
 
         } catch (SQLException e) {
             throw new InternalError();
         }
 
-
-        return null;
+        return result;
 
     }
 
