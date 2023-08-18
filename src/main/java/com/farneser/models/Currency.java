@@ -1,10 +1,16 @@
 package com.farneser.models;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Currency {
+    @SerializedName("id")
     private int _id;
-    private String _code;
+    @SerializedName("name")
     private String _fullName;
-    private String _sing;
+    @SerializedName("code")
+    private String _code;
+    @SerializedName("sign")
+    private String _sign;
 
     public int getId() {
         return _id;
@@ -30,11 +36,22 @@ public class Currency {
         _fullName = fullName;
     }
 
-    public String getSing() {
-        return _sing;
+    public String getSign() {
+        return _sign;
     }
 
-    public void setSing(String sing) {
-        _sing = sing;
+    public void setSign(String sing) {
+        _sign = sing;
+    }
+
+    public Currency(String code, String fullName, String sign) {
+        _code = code;
+        _fullName = fullName;
+        _sign = sign;
+    }
+
+    public Currency(int id, String code, String fullName, String sign) {
+        this(code, fullName, sign);
+        _id = id;
     }
 }
