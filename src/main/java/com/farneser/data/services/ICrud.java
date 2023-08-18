@@ -1,6 +1,6 @@
-package com.farneser.services;
+package com.farneser.data.services;
 
-import com.farneser.exceptions.InternalError;
+import com.farneser.data.exceptions.InternalError;
 
 import java.util.List;
 

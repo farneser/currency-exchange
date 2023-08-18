@@ -1,4 +1,4 @@
-package com.farneser.models;
+package com.farneser.data.models;
 
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;

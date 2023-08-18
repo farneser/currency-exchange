@@ -1,10 +1,9 @@
 package com.farneser.servlets;
 
-import com.farneser.exceptions.InternalError;
-import com.farneser.models.ErrorMessage;
-import com.farneser.services.AppDbContext;
+import com.farneser.data.exceptions.InternalError;
+import com.farneser.data.models.ErrorMessage;
+import com.farneser.data.services.AppDbContext;
 import com.google.gson.Gson;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

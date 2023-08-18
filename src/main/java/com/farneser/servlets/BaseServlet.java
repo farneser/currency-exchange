@@ -1,6 +1,6 @@
 package com.farneser.servlets;
 
-import com.farneser.models.ErrorMessage;
+import com.farneser.data.models.ErrorMessage;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletResponse;
 

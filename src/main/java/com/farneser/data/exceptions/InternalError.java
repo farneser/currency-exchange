@@ -1,3 +1,3 @@
-package com.farneser.exceptions;
+package com.farneser.data.exceptions;
 
 public class InternalError extends Exception{ }

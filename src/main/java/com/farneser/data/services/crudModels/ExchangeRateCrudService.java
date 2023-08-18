@@ -1,7 +1,7 @@
-package com.farneser.services.crudModels;
+package com.farneser.data.services.crudModels;
 
-import com.farneser.models.ExchangeRate;
-import com.farneser.services.CrudService;
+import com.farneser.data.models.ExchangeRate;
+import com.farneser.data.services.CrudService;
 
 import java.sql.Connection;
 import java.util.List;

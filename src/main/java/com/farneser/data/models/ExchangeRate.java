@@ -1,4 +1,4 @@
-package com.farneser.models;
+package com.farneser.data.models;
 
 import java.math.BigInteger;
 

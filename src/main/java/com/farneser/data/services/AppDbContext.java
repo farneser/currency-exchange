@@ -1,9 +1,9 @@
-package com.farneser.services;
+package com.farneser.data.services;
 
-import com.farneser.models.Currency;
-import com.farneser.models.ExchangeRate;
-import com.farneser.services.crudModels.CurrencyCrudService;
-import com.farneser.services.crudModels.ExchangeRateCrudService;
+import com.farneser.data.models.Currency;
+import com.farneser.data.models.ExchangeRate;
+import com.farneser.data.services.crudModels.CurrencyCrudService;
+import com.farneser.data.services.crudModels.ExchangeRateCrudService;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

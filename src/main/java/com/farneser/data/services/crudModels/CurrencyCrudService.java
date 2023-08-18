@@ -1,8 +1,8 @@
-package com.farneser.services.crudModels;
+package com.farneser.data.services.crudModels;
 
-import com.farneser.exceptions.InternalError;
-import com.farneser.models.Currency;
-import com.farneser.services.CrudService;
+import com.farneser.data.exceptions.InternalError;
+import com.farneser.data.models.Currency;
+import com.farneser.data.services.CrudService;
 
 import java.sql.Connection;
 import java.sql.SQLException;
