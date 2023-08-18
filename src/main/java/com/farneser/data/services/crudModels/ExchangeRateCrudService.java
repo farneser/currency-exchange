@@ -12,6 +12,7 @@ public class ExchangeRateCrudService extends CrudService<ExchangeRate> {
         super(connection, "ExchangeRates");
     }
 
+
     @Override
     public void create(ExchangeRate obj) {
 
@@ -28,17 +29,7 @@ public class ExchangeRateCrudService extends CrudService<ExchangeRate> {
     }
 
     @Override
-    public List<ExchangeRate> get() {
-        return null;
-    }
-
-    @Override
-    public ExchangeRate get(int id) {
-        return null;
-    }
-
-    @Override
-    public ExchangeRate get(String id) {
+    public ExchangeRate deserialize(List<String> object){
         return null;
     }
 }

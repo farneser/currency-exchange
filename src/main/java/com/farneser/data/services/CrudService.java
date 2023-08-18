@@ -6,7 +6,6 @@ import com.farneser.data.exceptions.ValueMissingError;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +29,25 @@ public abstract class CrudService<T> implements ICrud<T> {
         } catch (SQLException e) {
             throw new InternalError();
         }
+    }
+
+    @Override
+    public List<T> get() throws InternalError {
+        var result = new ArrayList<T>();
+
+        try {
+            var entities = getAll();
+
+            for (var entity : entities) {
+
+                result.add(deserialize(entity));
+            }
+
+        } catch (SQLException e) {
+            throw new InternalError();
+        }
+
+        return result;
     }
 
     protected List<List<String>> getAll() throws SQLException {
@@ -66,6 +84,11 @@ public abstract class CrudService<T> implements ICrud<T> {
     @Override
     public T get(int id) throws InternalError, ValueMissingError {
         return get("id", String.valueOf(id));
+    }
+
+    @Override
+    public T get(String id) throws InternalError, ValueMissingError {
+        return get(Integer.parseInt(id));
     }
 
     @Override
