@@ -11,7 +11,7 @@ public class BaseServlet extends HttpServlet {
     protected void returnError(HttpServletResponse resp, ErrorMessage errorMessage) throws IOException {
         var writer = resp.getWriter();
         resp.setStatus(errorMessage.getCode());
-        writer.write(ErrorMessage.InternalServerError.toString());
+        writer.write(errorMessage.toString());
         writer.flush();
     }
 }

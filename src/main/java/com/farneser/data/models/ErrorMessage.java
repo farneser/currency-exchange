@@ -28,6 +28,6 @@ public class ErrorMessage {
     }
 
     public static ErrorMessage InternalServerError = new ErrorMessage("Database unavailable", 500);
-    public static ErrorMessage CurrencyCodeNotFound = new ErrorMessage("Currency code отсутствует", 400);
-    public static ErrorMessage CurrencyNotFound = new ErrorMessage("Валюта не найдена", 404);
+    public static ErrorMessage CurrencyCodeNotFound = new ErrorMessage("Currency code missing", 400);
+    public static ErrorMessage CurrencyNotFound = new ErrorMessage("Currency not found", 404);
 }
