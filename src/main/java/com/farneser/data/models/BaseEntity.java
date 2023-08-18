@@ -15,7 +15,7 @@ public class BaseEntity {
         _id = id;
     }
 
-    public String getSerialized(){
+    public String getSerialized() {
         return new Gson().toJson(this);
     }
 }

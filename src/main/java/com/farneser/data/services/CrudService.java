@@ -27,7 +27,7 @@ public abstract class CrudService<T extends BaseEntity> implements ICrud<T> {
 
             var id = state.executeQuery(execute);
 
-            for (var val: getValuesFromQuery(id)){
+            for (var val : getValuesFromQuery(id)) {
                 return Integer.parseInt(val.get(0));
             }
 

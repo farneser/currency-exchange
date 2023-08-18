@@ -1,3 +1,4 @@
 package com.farneser.data.exceptions;
 
-public class InternalServerException extends Exception{ }
+public class InternalServerException extends Exception {
+}

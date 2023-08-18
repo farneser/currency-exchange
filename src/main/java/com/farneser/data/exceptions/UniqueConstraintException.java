@@ -1,3 +1,4 @@
 package com.farneser.data.exceptions;
 
-public class UniqueConstraintException extends Exception{ }
+public class UniqueConstraintException extends Exception {
+}

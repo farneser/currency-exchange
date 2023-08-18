@@ -1,3 +1,4 @@
 package com.farneser.data.exceptions;
 
-public class ValueMissingException extends Exception{ }
+public class ValueMissingException extends Exception {
+}

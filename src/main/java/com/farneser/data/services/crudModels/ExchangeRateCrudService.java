@@ -29,7 +29,7 @@ public class ExchangeRateCrudService extends CrudService<ExchangeRate> {
     }
 
     @Override
-    public ExchangeRate deserialize(List<String> object){
+    public ExchangeRate deserialize(List<String> object) {
         return null;
     }
 }

@@ -15,8 +15,24 @@ import java.util.Objects;
 
 public class AppDbContext {
 
+    private static AppDbContext _instance;
     public final ICrud<Currency> currency;
     public final ICrud<ExchangeRate> exchangeRate;
+
+    private AppDbContext() {
+        var connection = openConnection();
+        currency = new CurrencyCrudService(connection);
+        exchangeRate = new ExchangeRateCrudService(connection);
+    }
+
+    public static AppDbContext getInstance() {
+
+        if (_instance == null) {
+            _instance = new AppDbContext();
+        }
+
+        return _instance;
+    }
 
     private Connection openConnection() {
         Connection conn;
@@ -50,22 +66,5 @@ public class AppDbContext {
             throw new RuntimeException(e);
         }
         return conn;
-    }
-
-    private AppDbContext() {
-        var connection = openConnection();
-        currency = new CurrencyCrudService(connection);
-        exchangeRate = new ExchangeRateCrudService(connection);
-    }
-
-    private static AppDbContext _instance;
-
-    public static AppDbContext getInstance() {
-
-        if (_instance == null) {
-            _instance = new AppDbContext();
-        }
-
-        return _instance;
     }
 }

@@ -2,7 +2,7 @@ package com.farneser.data.models;
 
 import java.math.BigInteger;
 
-public class ExchangeRate extends BaseEntity{
+public class ExchangeRate extends BaseEntity {
     private int _baseCurrencyId;
     private int _targetCurrencyId;
     private BigInteger _rate;
