@@ -30,6 +30,6 @@ public class ExchangeRateCrudService extends CrudService<ExchangeRate> {
 
     @Override
     public ExchangeRate deserialize(List<String> object) {
-        return null;
+        return new ExchangeRate(Integer.parseInt(object.get(0)), Integer.parseInt(object.get(1)), Integer.parseInt(object.get(2)), Double.parseDouble(object.get(3)));
     }
 }

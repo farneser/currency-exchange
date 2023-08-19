@@ -18,7 +18,7 @@ public class CurrencyByCodeServlet extends BaseServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
-        var currencies = AppDbContext.getInstance().currency;
+        var context = AppDbContext.getInstance();
 
         try {
             var writer = resp.getWriter();
@@ -31,7 +31,7 @@ public class CurrencyByCodeServlet extends BaseServlet {
 
             var id = req.getPathInfo().substring(1);
 
-            writer.print(new Gson().toJson(currencies.get("code", id)));
+            writer.print(new Gson().toJson(context.currency.get("code", id)));
             writer.flush();
 
         } catch (InternalServerException e) {

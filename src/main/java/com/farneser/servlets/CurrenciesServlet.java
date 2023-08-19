@@ -18,13 +18,13 @@ public class CurrenciesServlet extends BaseServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
-        var currencies = AppDbContext.getInstance().currency;
+        var context = AppDbContext.getInstance();
 
         try {
             var writer = resp.getWriter();
 
             resp.setStatus(HttpServletResponse.SC_OK);
-            writer.print(new Gson().toJson(currencies.get()));
+            writer.print(new Gson().toJson(context.currency.get()));
             writer.flush();
 
         } catch (InternalServerException e) {
@@ -35,7 +35,7 @@ public class CurrenciesServlet extends BaseServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        var currencies = AppDbContext.getInstance().currency;
+        var context = AppDbContext.getInstance();
 
         var map = req.getParameterMap();
 
@@ -47,7 +47,7 @@ public class CurrenciesServlet extends BaseServlet {
             if (codes == null || names == null || signs == null) {
                 returnError(resp, ErrorMessage.FormFieldMissingError);
             } else {
-                var currency = currencies.create(new Currency(codes[0], names[0], signs[0]));
+                var currency = context.currency.create(new Currency(codes[0], names[0], signs[0]));
 
                 var writer = resp.getWriter();
 
