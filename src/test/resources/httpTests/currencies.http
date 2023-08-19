@@ -2,18 +2,18 @@ GET http://localhost:8080/currency_exchange_war/currencies
 
 ###
 
-GET http://localhost:8080/currency_exchange_war/currencies/
+GET http://localhost:8080/currency_exchange_war/currency/
 
 ###
 
-GET http://localhost:8080/currency_exchange_war/currencies/US
+GET http://localhost:8080/currency_exchange_war/currency/US
 
 ###
 
-GET http://localhost:8080/currency_exchange_war/currencies/USD
+GET http://localhost:8080/currency_exchange_war/currency/BTC
 
 ###
 
-GET http://localhost:8080/currency_exchange_war/currencies/USDD
+GET http://localhost:8080/currency_exchange_war/currency/USDD
 
 ###

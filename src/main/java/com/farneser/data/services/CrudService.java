@@ -6,9 +6,7 @@ import com.farneser.data.exceptions.UniqueConstraintException;
 import com.farneser.data.exceptions.ValueMissingException;
 import com.farneser.data.models.BaseEntity;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,13 +65,17 @@ public abstract class CrudService<T extends BaseEntity> implements ICrud<T> {
 
     protected List<List<String>> getAll() throws SQLException {
 
-        var state = _connection.createStatement();
+        var sql = "SELECT * FROM $tableName;";
 
-        var queryResult = state.executeQuery("SELECT * FROM " + _tableName);
+        sql = sql.replace("$tableName", _tableName);
+
+        var preparedStatement = _connection.prepareStatement(sql);
+
+        var queryResult = preparedStatement.executeQuery();
 
         var result = getValuesFromQuery(queryResult);
 
-        state.close();
+        preparedStatement.close();
 
         return result;
     }
@@ -109,18 +111,26 @@ public abstract class CrudService<T extends BaseEntity> implements ICrud<T> {
         }
 
         try {
-            var state = _connection.createStatement();
+            var sql = "SELECT * FROM %s WHERE %s=?";
 
-            var queryResult = state.executeQuery("SELECT * FROM " + _tableName + " WHERE " + paramName + "='" + value + "';");
+            sql = String.format(sql, _tableName, paramName);
+
+            var preparedStatement = _connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
+            preparedStatement.setString(1, "'" + value + "'");
+
+            var queryResult = preparedStatement.executeQuery();
 
             for (var entity : getValuesFromQuery(queryResult)) {
                 return deserialize(entity);
             }
 
-            state.close();
+            queryResult.close();
+            preparedStatement.close();
 
             throw new NotFoundException();
         } catch (SQLException e) {
+            System.out.println(e.getMessage());
             throw new InternalServerException();
         }
     }

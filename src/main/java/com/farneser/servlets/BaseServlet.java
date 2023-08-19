@@ -6,7 +6,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-public class BaseServlet extends HttpServlet {
+public abstract class BaseServlet extends HttpServlet {
 
     protected void returnError(HttpServletResponse resp, ErrorMessage errorMessage) throws IOException {
         var writer = resp.getWriter();

@@ -3,7 +3,7 @@ package com.farneser.data.models;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
-public class BaseEntity {
+public abstract class BaseEntity {
     @SerializedName("id")
     protected int _id;
 
