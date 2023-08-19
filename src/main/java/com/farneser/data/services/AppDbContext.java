@@ -42,7 +42,6 @@ public class AppDbContext {
 
             conn = DriverManager.getConnection("jdbc:sqlite:currency.db");
 
-
             var inputStream = new InputStreamReader(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("tables.sql")));
 
             var reader = new BufferedReader(inputStream);

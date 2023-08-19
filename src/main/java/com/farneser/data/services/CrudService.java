@@ -6,7 +6,10 @@ import com.farneser.data.exceptions.UniqueConstraintException;
 import com.farneser.data.exceptions.ValueMissingException;
 import com.farneser.data.models.BaseEntity;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,7 +72,11 @@ public abstract class CrudService<T extends BaseEntity> implements ICrud<T> {
 
         sql = sql.replace("$tableName", _tableName);
 
-        var preparedStatement = _connection.prepareStatement(sql);
+        return getByCommand(sql);
+    }
+
+    protected List<List<String>> getByCommand(String execute) throws SQLException {
+        var preparedStatement = _connection.prepareStatement(execute);
 
         var queryResult = preparedStatement.executeQuery();
 
@@ -78,6 +85,7 @@ public abstract class CrudService<T extends BaseEntity> implements ICrud<T> {
         preparedStatement.close();
 
         return result;
+
     }
 
     protected List<List<String>> getValuesFromQuery(ResultSet resultSet) throws SQLException {
@@ -130,7 +138,6 @@ public abstract class CrudService<T extends BaseEntity> implements ICrud<T> {
 
             throw new NotFoundException();
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
             throw new InternalServerException();
         }
     }

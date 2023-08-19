@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS ExchangeRates
     ID               INTEGER PRIMARY KEY AUTOINCREMENT,
     BaseCurrencyId   INTEGER,
     TargetCurrencyId INTEGER,
-    Rate             BIGINT(20, 6) NOT NULL,
+    Rate             REAL NOT NULL,
     FOREIGN KEY (BaseCurrencyId) REFERENCES Currencies (ID),
     FOREIGN KEY (TargetCurrencyId) REFERENCES Currencies (ID),
     UNIQUE (BaseCurrencyId, TargetCurrencyId)

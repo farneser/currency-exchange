@@ -18,13 +18,13 @@ public class ExchangeRatesServlet extends BaseServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
-        var exchangeRates = AppDbContext.getInstance().exchangeRate;
+        var context = AppDbContext.getInstance();
 
         try {
             var writer = resp.getWriter();
 
             resp.setStatus(HttpServletResponse.SC_OK);
-            writer.print(new Gson().toJson(exchangeRates.get()));
+            writer.print(new Gson().toJson(context.exchangeRate.get()));
             writer.flush();
 
         } catch (InternalServerException e) {

@@ -26,12 +26,12 @@ public class CurrencyCrudService extends CrudService<Currency> {
 
     @Override
     public void update(Currency obj) {
-
+        throw new RuntimeException("method must be implemented");
     }
 
     @Override
     public void delete(int id) {
-
+        throw new RuntimeException("method must be implemented");
     }
 
     @Override
