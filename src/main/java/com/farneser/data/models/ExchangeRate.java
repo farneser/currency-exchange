@@ -4,9 +4,11 @@ import com.google.gson.annotations.SerializedName;
 
 public class ExchangeRate extends BaseEntity {
     @SerializedName("baseCurrency")
-    private int _baseCurrencyId;
+    private Currency _baseCurrency;
+    private transient int _baseCurrencyId;
     @SerializedName("targetCurrency")
-    private int _targetCurrencyId;
+    private Currency _targetCurrency;
+    private transient int _targetCurrencyId;
     @SerializedName("rate")
     private double _rate;
 
@@ -32,6 +34,24 @@ public class ExchangeRate extends BaseEntity {
 
     public void setRate(double rate) {
         _rate = rate;
+    }
+
+    public void setTargetCurrency(Currency currency) {
+        _targetCurrencyId = currency.getId();
+        _targetCurrency = currency;
+    }
+
+    public void setBaseCurrency(Currency currency) {
+        _baseCurrencyId = currency.getId();
+        _baseCurrency = currency;
+    }
+
+    public Currency getBaseCurrency() {
+        return _baseCurrency;
+    }
+
+    public Currency getTargetCurrency() {
+        return _targetCurrency;
     }
 
     public ExchangeRate(int baseCurrencyId, int targetCurrencyId, double rate) {
