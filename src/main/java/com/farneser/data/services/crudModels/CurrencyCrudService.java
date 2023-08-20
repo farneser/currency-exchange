@@ -1,12 +1,15 @@
 package com.farneser.data.services.crudModels;
 
 import com.farneser.data.exceptions.InternalServerException;
+import com.farneser.data.exceptions.NotFoundException;
 import com.farneser.data.exceptions.UniqueConstraintException;
+import com.farneser.data.exceptions.ValueMissingException;
 import com.farneser.data.models.Currency;
 import com.farneser.data.models.ExchangeRate;
 import com.farneser.data.services.CrudService;
 
 import java.sql.Connection;
+import java.util.HashMap;
 import java.util.List;
 
 public class CurrencyCrudService extends CrudService<Currency> {
@@ -16,14 +19,16 @@ public class CurrencyCrudService extends CrudService<Currency> {
     }
 
     @Override
-    public Currency create(Currency obj) throws InternalServerException, UniqueConstraintException {
+    public Currency create(Currency obj) throws InternalServerException, UniqueConstraintException, ValueMissingException, NotFoundException {
 
-        var id = executeQuery("INSERT INTO Currencies (Code, FullName, Sign) VALUES ('" + obj.getCode() + "', '" + obj.getFullName() + "', '" + obj.getSign() + "') RETURNING ID;");
+        executeQuery("INSERT INTO Currencies (Code, FullName, Sign) VALUES ('" + obj.getCode() + "', '" + obj.getFullName() + "', '" + obj.getSign() + "') RETURNING ID;");
+        var params = new HashMap<String, String>();
 
-        obj.setId(id);
+        params.put("code", obj.getCode());
 
-        return obj;
+        return getFirst(params);
     }
+
 
     @Override
     public ExchangeRate update(Currency obj) {

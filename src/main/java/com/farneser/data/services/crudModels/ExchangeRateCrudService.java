@@ -45,7 +45,7 @@ public class ExchangeRateCrudService extends CrudService<ExchangeRate> {
         params.put("baseCurrency", obj.getBaseCurrency().getCode());
         params.put("targetCurrency", obj.getTargetCurrency().getCode());
 
-        return get(params).get(0);
+        return getFirst(params);
     }
 
     @Override
@@ -53,20 +53,20 @@ public class ExchangeRateCrudService extends CrudService<ExchangeRate> {
 
         executeQuery(
                 "UPDATE ExchangeRates\n" +
-                "SET Rate="+obj.getRate()+"\n" +
-                "WHERE BaseCurrencyId = (SELECT C1.ID as id1\n" +
-                "                        FROM (SELECT ID FROM Currencies WHERE Code = '"+obj.getBaseCurrency().getCode()+"') AS C1\n" +
-                "                                 CROSS JOIN(SELECT ID FROM Currencies WHERE (Code = '"+obj.getTargetCurrency().getCode()+"')) AS C2)\n" +
-                "  and TargetCurrencyId = (SELECT C2.ID as id2\n" +
-                        "                        FROM (SELECT ID FROM Currencies WHERE Code = '"+obj.getBaseCurrency().getCode()+"') AS C1\n" +
-                        "                                 CROSS JOIN(SELECT ID FROM Currencies WHERE (Code = '"+obj.getTargetCurrency().getCode()+"')) AS C2)\n");
+                        "SET Rate=" + obj.getRate() + "\n" +
+                        "WHERE BaseCurrencyId = (SELECT C1.ID as id1\n" +
+                        "                        FROM (SELECT ID FROM Currencies WHERE Code = '" + obj.getBaseCurrency().getCode() + "') AS C1\n" +
+                        "                                 CROSS JOIN(SELECT ID FROM Currencies WHERE (Code = '" + obj.getTargetCurrency().getCode() + "')) AS C2)\n" +
+                        "  and TargetCurrencyId = (SELECT C2.ID as id2\n" +
+                        "                        FROM (SELECT ID FROM Currencies WHERE Code = '" + obj.getBaseCurrency().getCode() + "') AS C1\n" +
+                        "                                 CROSS JOIN(SELECT ID FROM Currencies WHERE (Code = '" + obj.getTargetCurrency().getCode() + "')) AS C2)\n");
 
         var params = new HashMap<String, String>();
 
         params.put("baseCurrency", obj.getBaseCurrency().getCode());
         params.put("targetCurrency", obj.getTargetCurrency().getCode());
 
-        return get(params).get(0);
+        return getFirst(params);
 
     }
 

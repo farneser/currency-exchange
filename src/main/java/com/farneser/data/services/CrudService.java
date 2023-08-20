@@ -25,32 +25,15 @@ public abstract class CrudService<T extends BaseEntity> implements ICrud<T> {
         _tableName = tableName;
     }
 
-    protected int executeQuery(String execute) throws InternalServerException, UniqueConstraintException {
+    protected void executeQuery(String execute) throws InternalServerException, UniqueConstraintException {
         try {
             var preparedStatement = _connection.prepareStatement(execute);
 
-            try {
-                var id = preparedStatement.executeQuery();
-
-                for (var val : getValuesFromQuery(id)) {
-                    return Integer.parseInt(val.get(0));
-                }
-            }catch (SQLException e){
-
-                // unknown result or void
-                if (e.getErrorCode() == 0){
-                    return 0;
-                }
-
-                throw new InternalServerException();
-            }
+            preparedStatement.execute();
 
             preparedStatement.close();
 
-            return 0;
-
         } catch (SQLException e) {
-            System.out.println(e.getErrorCode());
             // 19 - [SQLITE_CONSTRAINT_UNIQUE] A UNIQUE constraint failed
             if (e.getErrorCode() == 19) {
                 throw new UniqueConstraintException();
@@ -86,6 +69,17 @@ public abstract class CrudService<T extends BaseEntity> implements ICrud<T> {
         sql = sql.replace("$tableName", _tableName);
 
         return getByCommand(sql);
+    }
+
+    protected T getFirst(HashMap<String, String> params) throws InternalServerException, ValueMissingException, NotFoundException {
+
+        var result = get(params);
+
+        if (result.isEmpty()) {
+            throw new NotFoundException();
+        }
+
+        return result.get(0);
     }
 
     protected List<List<String>> getByCommand(String execute) throws SQLException {
@@ -127,7 +121,7 @@ public abstract class CrudService<T extends BaseEntity> implements ICrud<T> {
 
         params.put("id", String.valueOf(id));
 
-        return get(params).get(0);
+        return getFirst(params);
     }
 
     @Override

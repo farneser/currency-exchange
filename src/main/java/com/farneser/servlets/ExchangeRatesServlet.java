@@ -57,12 +57,14 @@ public class ExchangeRatesServlet extends BaseServlet {
                 writer.write(exchangeRate.getSerialized());
                 writer.flush();
             }
-        } catch (InternalServerException | NotFoundException e) {
+        } catch (InternalServerException e) {
             returnError(resp, ErrorMessage.InternalServerError);
         } catch (UniqueConstraintException e) {
             returnError(resp, ErrorMessage.ExchangeRateAlreadyExistsError);
         } catch (ValueMissingException e) {
             returnError(resp, ErrorMessage.FormFieldMissingError);
+        } catch (NotFoundException e) {
+            returnError(resp, ErrorMessage.CurrencyCodeNotFound);
         }
 
     }
