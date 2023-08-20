@@ -40,14 +40,14 @@ public class ExchangeRatesServlet extends BaseServlet {
         var map = req.getParameterMap();
 
         try {
-            var codes = map.get("baseCurrencyCode");
-            var names = map.get("targetCurrencyCode");
-            var signs = map.get("rate");
+            var baseCurrencyCodes = map.get("baseCurrencyCode");
+            var targetCurrencyCodes = map.get("targetCurrencyCode");
+            var rates = map.get("rate");
 
-            if (codes == null || names == null || signs == null) {
+            if (baseCurrencyCodes == null || targetCurrencyCodes == null || rates == null) {
                 returnError(resp, ErrorMessage.FormFieldMissingError);
             } else {
-                var exchangeRate = context.exchangeRate.create(new ExchangeRate(1, 1, 1));
+                var exchangeRate = context.exchangeRate.create(new ExchangeRate(Integer.parseInt(baseCurrencyCodes[0]), Integer.parseInt(targetCurrencyCodes[0]), Double.parseDouble(rates[0])));
 
                 var writer = resp.getWriter();
 
