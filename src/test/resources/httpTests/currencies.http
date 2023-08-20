@@ -17,3 +17,10 @@ GET http://localhost:8080/currency_exchange_war/currency/BTC
 GET http://localhost:8080/currency_exchange_war/currency/USDD
 
 ###
+
+POST http://localhost:8080/currency_exchange_war/currencies
+
+baseCurrencyCode:BYN
+targetCurrencyCode:RUB
+rate:40
+###
