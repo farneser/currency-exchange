@@ -464,6 +464,66 @@
 			"response": []
 		},
 		{
+			"name": "/exchangeRates",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"return array or error\", ()=>{",
+							"",
+							"    const body = pm.response.json;",
+							"",
+							"    if (pm.response.status == 500){",
+							"        pm.expect(body.message).have()",
+							"    }",
+							"",
+							"    if (pm.response.status == 200){",
+							"        pm.expect(pm.response.json()).to.be.an('array').but.not.an('object')",
+							"    }",
+							"",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "baseCurrencyCode",
+							"value": "BYN",
+							"type": "text"
+						},
+						{
+							"key": "targetCurrencyCode",
+							"value": "RUB",
+							"type": "text"
+						},
+						{
+							"key": "rate",
+							"value": "40",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{base_url}}/exchangeRates",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"exchangeRates"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "/exchangeRate/BTCBYN",
 			"event": [
 				{
@@ -505,6 +565,57 @@
 			"response": []
 		},
 		{
+			"name": "/exchangeRate/BTCBYN",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"return array or error\", ()=>{",
+							"",
+							"    const body = pm.response.json;",
+							"",
+							"    if (pm.response.status == 500){",
+							"        pm.expect(body.message).have()",
+							"    }",
+							"",
+							"    if (pm.response.status == 200){",
+							"        pm.expect(pm.response.json()).to.be.an('array').but.not.an('object')",
+							"    }",
+							"",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "rate",
+							"value": "15",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{base_url}}/exchangeRate/BYNBTC",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"exchangeRate",
+						"BYNBTC"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "/currencies",
 			"event": [
 				{
@@ -525,17 +636,17 @@
 					"urlencoded": [
 						{
 							"key": "name",
-							"value": "bitcoin",
+							"value": "rub",
 							"type": "text"
 						},
 						{
 							"key": "code",
-							"value": "BTC",
+							"value": "RUB",
 							"type": "text"
 						},
 						{
 							"key": "sign",
-							"value": "c",
+							"value": "r",
 							"type": "text"
 						},
 						{
