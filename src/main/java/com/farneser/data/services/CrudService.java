@@ -29,10 +29,20 @@ public abstract class CrudService<T extends BaseEntity> implements ICrud<T> {
         try {
             var preparedStatement = _connection.prepareStatement(execute);
 
-            var id = preparedStatement.executeQuery();
+            try {
+                var id = preparedStatement.executeQuery();
 
-            for (var val : getValuesFromQuery(id)) {
-                return Integer.parseInt(val.get(0));
+                for (var val : getValuesFromQuery(id)) {
+                    return Integer.parseInt(val.get(0));
+                }
+            }catch (SQLException e){
+
+                // unknown result or void
+                if (e.getErrorCode() == 0){
+                    return 0;
+                }
+
+                throw new InternalServerException();
             }
 
             preparedStatement.close();
@@ -40,7 +50,7 @@ public abstract class CrudService<T extends BaseEntity> implements ICrud<T> {
             return 0;
 
         } catch (SQLException e) {
-
+            System.out.println(e.getErrorCode());
             // 19 - [SQLITE_CONSTRAINT_UNIQUE] A UNIQUE constraint failed
             if (e.getErrorCode() == 19) {
                 throw new UniqueConstraintException();
@@ -105,6 +115,8 @@ public abstract class CrudService<T extends BaseEntity> implements ICrud<T> {
 
             result.add(line);
         }
+
+        resultSet.close();
 
         return result;
     }

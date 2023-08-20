@@ -37,6 +37,7 @@ public class ExchangeRatesServlet extends BaseServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+
         var context = AppDbContext.getInstance();
 
         var map = req.getParameterMap();

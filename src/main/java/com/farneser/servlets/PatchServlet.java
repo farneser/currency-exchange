@@ -15,5 +15,5 @@ public abstract class PatchServlet extends BaseServlet {
         }
     }
 
-    protected abstract void doPatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
+    protected abstract void doPatch(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException;
 }
