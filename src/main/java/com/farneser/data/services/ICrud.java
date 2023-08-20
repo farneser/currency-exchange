@@ -16,7 +16,7 @@ public interface ICrud<T extends BaseEntity> {
      *
      * @param obj instance of object that we want to save
      * @return object T
-     * @throws InternalServerException in any server error
+     * @throws InternalServerException   in any server error
      * @throws UniqueConstraintException in unique error (id already exists for example)
      */
     T create(T obj) throws InternalServerException, UniqueConstraintException, ValueMissingException, NotFoundException;

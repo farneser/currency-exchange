@@ -18,6 +18,25 @@ import java.util.HashMap;
 @WebServlet("/exchangeRate/*")
 public class ExchangeRateByCodeServlet extends PatchServlet {
 
+    private static HashMap<String, String> getParams(HttpServletRequest req) throws ValueMissingException {
+
+        // endpoint must have only 7 letters of country codes
+        // examples or req.getPathInfo: null, /BTC, /, /HELLO, /BTCBYN
+        // only /BTCBYN correct
+        if (req.getPathInfo() == null || req.getPathInfo().length() != 7) {
+            throw new ValueMissingException();
+        }
+
+        var id = req.getPathInfo().substring(1);
+
+        var params = new HashMap<String, String>();
+
+        params.put("baseCurrency", id.substring(0, 3));
+        params.put("targetCurrency", id.substring(3, 6));
+
+        return params;
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
@@ -41,25 +60,6 @@ public class ExchangeRateByCodeServlet extends PatchServlet {
             returnError(resp, ErrorMessage.CurrencyNotFound);
         }
 
-    }
-
-    private static HashMap<String, String> getParams(HttpServletRequest req) throws ValueMissingException {
-
-        // endpoint must have only 7 letters of country codes
-        // examples or req.getPathInfo: null, /BTC, /, /HELLO, /BTCBYN
-        // only /BTCBYN correct
-        if (req.getPathInfo() == null || req.getPathInfo().length() != 7) {
-            throw new ValueMissingException();
-        }
-
-        var id = req.getPathInfo().substring(1);
-
-        var params = new HashMap<String, String>();
-
-        params.put("baseCurrency", id.substring(0, 3));
-        params.put("targetCurrency", id.substring(3, 6));
-
-        return params;
     }
 
     @Override

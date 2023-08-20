@@ -12,6 +12,23 @@ public class ExchangeRate extends BaseEntity {
     @SerializedName("rate")
     private double _rate;
 
+    public ExchangeRate(String baseCurrencyCode, String targetCurrencyCode, double rate) {
+        _baseCurrency = new Currency(baseCurrencyCode, "", "");
+        _targetCurrency = new Currency(targetCurrencyCode, "", "");
+        _rate = rate;
+    }
+
+    public ExchangeRate(int baseCurrencyId, int targetCurrencyId, double rate) {
+        _baseCurrencyId = baseCurrencyId;
+        _targetCurrencyId = targetCurrencyId;
+        _rate = rate;
+    }
+
+    public ExchangeRate(int id, int baseCurrencyId, int targetCurrencyId, double rate) {
+        this(baseCurrencyId, targetCurrencyId, rate);
+        _id = id;
+    }
+
     public int getBaseCurrencyId() {
         return _baseCurrencyId;
     }
@@ -36,9 +53,8 @@ public class ExchangeRate extends BaseEntity {
         _rate = rate;
     }
 
-    public void setTargetCurrency(Currency currency) {
-        _targetCurrencyId = currency.getId();
-        _targetCurrency = currency;
+    public Currency getBaseCurrency() {
+        return _baseCurrency;
     }
 
     public void setBaseCurrency(Currency currency) {
@@ -46,28 +62,12 @@ public class ExchangeRate extends BaseEntity {
         _baseCurrency = currency;
     }
 
-    public Currency getBaseCurrency() {
-        return _baseCurrency;
-    }
-
     public Currency getTargetCurrency() {
         return _targetCurrency;
     }
 
-    public ExchangeRate(String baseCurrencyCode, String targetCurrencyCode, double rate){
-        _baseCurrency = new Currency(baseCurrencyCode, "", "");
-        _targetCurrency = new Currency(targetCurrencyCode, "", "");
-        _rate = rate;
-    }
-
-    public ExchangeRate(int baseCurrencyId, int targetCurrencyId, double rate) {
-        _baseCurrencyId = baseCurrencyId;
-        _targetCurrencyId = targetCurrencyId;
-        _rate = rate;
-    }
-
-    public ExchangeRate(int id, int baseCurrencyId, int targetCurrencyId, double rate) {
-        this(baseCurrencyId, targetCurrencyId, rate);
-        _id = id;
+    public void setTargetCurrency(Currency currency) {
+        _targetCurrencyId = currency.getId();
+        _targetCurrency = currency;
     }
 }

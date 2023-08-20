@@ -29,7 +29,7 @@ public class CurrencyByCodeServlet extends BaseServlet {
             // endpoint must have only 3 letters of country code
             // examples or req.getPathInfo: null, /BTC, /, /HELLO
             // only /BTC correct
-            if (req.getPathInfo() == null || req.getPathInfo().length() != 4){
+            if (req.getPathInfo() == null || req.getPathInfo().length() != 4) {
                 throw new ValueMissingException();
             }
 
