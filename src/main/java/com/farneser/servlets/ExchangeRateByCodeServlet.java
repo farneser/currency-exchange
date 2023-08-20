@@ -13,8 +13,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 
-@WebServlet("/currency/*")
-public class CurrencyByCodeServlet extends BaseServlet {
+@WebServlet("/exchangeRate/*")
+public class ExchangeRateByCodeServlet extends BaseServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -26,20 +26,9 @@ public class CurrencyByCodeServlet extends BaseServlet {
 
             resp.setStatus(HttpServletResponse.SC_OK);
 
-            // endpoint must have only 3 letters of country code
-            // examples or req.getPathInfo: null, /BTC, /, /HELLO
-            // only /BTC correct
-            if (req.getPathInfo() == null || req.getPathInfo().length() != 4){
-                throw new ValueMissingException();
-            }
+            var params = getParams(req);
 
-            var id = req.getPathInfo().substring(1);
-
-            var params = new HashMap<String, String>();
-
-            params.put("code", id);
-
-            writer.print(new Gson().toJson(context.currency.get(params).get(0)));
+            writer.print(new Gson().toJson(context.exchangeRate.get(params).get(0)));
             writer.flush();
 
         } catch (InternalServerException e) {
@@ -50,5 +39,24 @@ public class CurrencyByCodeServlet extends BaseServlet {
             returnError(resp, ErrorMessage.CurrencyNotFound);
         }
 
+    }
+
+    private static HashMap<String, String> getParams(HttpServletRequest req) throws ValueMissingException {
+
+        // endpoint must have only 7 letters of country codes
+        // examples or req.getPathInfo: null, /BTC, /, /HELLO, /BTCBYN
+        // only /BTCBYN correct
+        if (req.getPathInfo() == null || req.getPathInfo().length() != 7) {
+            throw new ValueMissingException();
+        }
+
+        var id = req.getPathInfo().substring(1);
+
+        var params = new HashMap<String, String>();
+
+        params.put("baseCurrency", id.substring(0, 3));
+        params.put("targetCurrency", id.substring(3, 6));
+
+        return params;
     }
 }
