@@ -7,7 +7,10 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public abstract class BaseServlet extends HttpServlet {
@@ -19,19 +22,30 @@ public abstract class BaseServlet extends HttpServlet {
         writer.flush();
     }
 
-    protected HashMap<String, String> getBody(HttpServletRequest req) throws IOException {
+    protected HashMap<String, List<String>> getBody(HttpServletRequest req) throws IOException {
         var body = req.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
 
         var pairs = body.split("\\&");
-        var result = new HashMap<String, String>();
+        var result = new HashMap<String, List<String>>();
 
         for (var pair : pairs) {
             var fields = pair.split("=");
 
-            var name = URLDecoder.decode(fields[0], "UTF-8");
-            var value = URLDecoder.decode(fields[1], "UTF-8");
+            var name = URLDecoder.decode(fields[0], StandardCharsets.UTF_8);
+            var value = URLDecoder.decode(fields[1], StandardCharsets.UTF_8);
 
-            result.put(name, value);
+            if (result.containsKey(name)) {
+                var line = result.get(name);
+
+                line.add(value);
+
+                result.put(name, line);
+            } else {
+                var line = new ArrayList<String>();
+                line.add(value);
+                result.put(name, line);
+
+            }
 
         }
 
