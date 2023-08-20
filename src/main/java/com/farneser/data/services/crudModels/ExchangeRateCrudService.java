@@ -2,6 +2,7 @@ package com.farneser.data.services.crudModels;
 
 import com.farneser.data.exceptions.InternalServerException;
 import com.farneser.data.exceptions.NotFoundException;
+import com.farneser.data.exceptions.UniqueConstraintException;
 import com.farneser.data.exceptions.ValueMissingException;
 import com.farneser.data.models.Currency;
 import com.farneser.data.models.ExchangeRate;
@@ -21,8 +22,12 @@ public class ExchangeRateCrudService extends CrudService<ExchangeRate> {
     }
 
     @Override
-    public ExchangeRate create(ExchangeRate obj) {
-        return null;
+    public ExchangeRate create(ExchangeRate obj) throws UniqueConstraintException, InternalServerException {
+        var id = create("INSERT INTO ExchangeRates (BaseCurrencyId, TargetCurrencyId, Rate) VALUES ('" + obj.getBaseCurrencyId() + "', '" + obj.getTargetCurrencyId() + "', '" + obj.getRate() + "') RETURNING ID;");
+
+        obj.setId(id);
+
+        return obj;
     }
 
     @Override
@@ -76,9 +81,9 @@ public class ExchangeRateCrudService extends CrudService<ExchangeRate> {
 
             var sql =
                     "SELECT * FROM ExchangeRates " +
-                    "JOIN main.Currencies base ON ExchangeRates.BaseCurrencyId = base.ID " +
-                    "JOIN main.Currencies target ON ExchangeRates.TargetCurrencyId = target.ID " +
-                    "WHERE base.Code = ? AND target.Code = ? OR base.Code = ? AND target.Code = ?;";
+                            "JOIN main.Currencies base ON ExchangeRates.BaseCurrencyId = base.ID " +
+                            "JOIN main.Currencies target ON ExchangeRates.TargetCurrencyId = target.ID " +
+                            "WHERE base.Code = ? AND target.Code = ? OR base.Code = ? AND target.Code = ?;";
 
             var preparedState = _connection.prepareStatement(sql);
 
@@ -91,7 +96,7 @@ public class ExchangeRateCrudService extends CrudService<ExchangeRate> {
 
             var queryValues = getValuesFromQuery(queryResult);
 
-            queryValues.forEach(val-> result.add(deserialize(val)));
+            queryValues.forEach(val -> result.add(deserialize(val)));
 
             queryResult.close();
             preparedState.close();
