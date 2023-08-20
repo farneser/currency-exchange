@@ -27,15 +27,15 @@ public abstract class CrudService<T extends BaseEntity> implements ICrud<T> {
 
     protected int create(String execute) throws InternalServerException, UniqueConstraintException {
         try {
-            var state = _connection.createStatement();
+            var preparedStatement = _connection.prepareStatement(execute);
 
-            var id = state.executeQuery(execute);
+            var id = preparedStatement.executeQuery();
 
             for (var val : getValuesFromQuery(id)) {
                 return Integer.parseInt(val.get(0));
             }
 
-            state.close();
+            preparedStatement.close();
 
             return 0;
 
@@ -140,9 +140,7 @@ public abstract class CrudService<T extends BaseEntity> implements ICrud<T> {
 
             sql.set(sql.get() + " WHERE ");
 
-            params.forEach((param, value) -> {
-                sql.set(sql.get() + param + "='" + value + "' and ");
-            });
+            params.forEach((param, value) -> sql.set(sql.get() + param + "='" + value + "' and "));
 
             sql.set(sql.get().substring(0, sql.get().length() - 5) + ";");
 

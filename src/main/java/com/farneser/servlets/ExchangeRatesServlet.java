@@ -1,7 +1,9 @@
 package com.farneser.servlets;
 
 import com.farneser.data.exceptions.InternalServerException;
+import com.farneser.data.exceptions.NotFoundException;
 import com.farneser.data.exceptions.UniqueConstraintException;
+import com.farneser.data.exceptions.ValueMissingException;
 import com.farneser.data.models.ErrorMessage;
 import com.farneser.data.models.ExchangeRate;
 import com.farneser.data.services.AppDbContext;
@@ -47,18 +49,19 @@ public class ExchangeRatesServlet extends BaseServlet {
             if (baseCurrencyCodes == null || targetCurrencyCodes == null || rates == null) {
                 returnError(resp, ErrorMessage.FormFieldMissingError);
             } else {
-                var exchangeRate = context.exchangeRate.create(new ExchangeRate(Integer.parseInt(baseCurrencyCodes[0]), Integer.parseInt(targetCurrencyCodes[0]), Double.parseDouble(rates[0])));
+                var exchangeRate = context.exchangeRate.create(new ExchangeRate(baseCurrencyCodes[0], targetCurrencyCodes[0], Double.parseDouble(rates[0])));
 
                 var writer = resp.getWriter();
 
                 writer.write(exchangeRate.getSerialized());
                 writer.flush();
             }
-
-        } catch (InternalServerException e) {
+        } catch (InternalServerException | NotFoundException e) {
             returnError(resp, ErrorMessage.InternalServerError);
         } catch (UniqueConstraintException e) {
-            returnError(resp, ErrorMessage.CurrencyAlreadyExistsError);
+            returnError(resp, ErrorMessage.ExchangeRateAlreadyExistsError);
+        } catch (ValueMissingException e) {
+            returnError(resp, ErrorMessage.FormFieldMissingError);
         }
 
     }

@@ -9,6 +9,7 @@ public class ErrorMessage {
     public static ErrorMessage CurrencyNotFound = new ErrorMessage("Currency not found", 404);
     public static ErrorMessage FormFieldMissingError = new ErrorMessage("Form field missing", 400);
     public static ErrorMessage CurrencyAlreadyExistsError = new ErrorMessage("Currency already exists", 409);
+    public static ErrorMessage ExchangeRateAlreadyExistsError = new ErrorMessage("Exchange rate already exists", 409);
     @SerializedName("message")
     private final String _message;
     private transient final int _code;
