@@ -2,6 +2,8 @@ package com.farneser.data.models;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Objects;
+
 public class ExchangeRate extends BaseEntity {
     @SerializedName("baseCurrency")
     private Currency _baseCurrency;
@@ -30,6 +32,10 @@ public class ExchangeRate extends BaseEntity {
     }
 
     public int getBaseCurrencyId() {
+        if (_baseCurrency != null && _baseCurrency.getId() != 0) {
+            _baseCurrencyId = _baseCurrency.getId();
+        }
+
         return _baseCurrencyId;
     }
 
@@ -38,6 +44,10 @@ public class ExchangeRate extends BaseEntity {
     }
 
     public int getTargetCurrencyId() {
+        if (_targetCurrency != null && _targetCurrency.getId() != 0) {
+            _targetCurrencyId = _targetCurrency.getId();
+        }
+
         return _targetCurrencyId;
     }
 
@@ -69,5 +79,18 @@ public class ExchangeRate extends BaseEntity {
     public void setTargetCurrency(Currency currency) {
         _targetCurrencyId = currency.getId();
         _targetCurrency = currency;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ExchangeRate that = (ExchangeRate) o;
+        return _baseCurrencyId == that._baseCurrencyId && _targetCurrencyId == that._targetCurrencyId && Double.compare(_rate, that._rate) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(_baseCurrencyId, _targetCurrencyId, _rate);
     }
 }

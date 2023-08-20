@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 @WebServlet("/exchangeRate/*")
-public class ExchangeRateByCodeServlet extends PatchServlet {
+public class ExchangeRateServlet extends PatchServlet {
 
     private static HashMap<String, String> getParams(HttpServletRequest req) throws ValueMissingException {
 

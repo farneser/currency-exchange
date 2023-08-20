@@ -6,10 +6,10 @@ import com.google.gson.annotations.SerializedName;
 public class ErrorMessage {
     public static ErrorMessage InternalServerError = new ErrorMessage("Database unavailable", 500);
     public static ErrorMessage CurrencyCodeNotFound = new ErrorMessage("Currency code not found", 400);
-    public static ErrorMessage ExchangeCodesNotFound = new ErrorMessage("Exchange codes not found", 404);
     public static ErrorMessage CurrencyNotFound = new ErrorMessage("Currency not found", 404);
-    public static ErrorMessage FormFieldMissingError = new ErrorMessage("Form field missing", 400);
     public static ErrorMessage CurrencyAlreadyExistsError = new ErrorMessage("Currency already exists", 409);
+    public static ErrorMessage FormFieldMissingError = new ErrorMessage("Form field missing", 400);
+    public static ErrorMessage ExchangeCodesNotFound = new ErrorMessage("Exchange codes not found", 404);
     public static ErrorMessage ExchangeRateAlreadyExistsError = new ErrorMessage("Exchange rate already exists", 409);
     @SerializedName("message")
     private final String _message;

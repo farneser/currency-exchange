@@ -18,6 +18,11 @@ REST API для описания валют и обменных курсов. П
 - Описание всех точек апи [docs](/src/main/java/com/farneser/servlets/README.md)
 - Возможно введение простого клиента
 
+## Примечания / требования
+
+- ACID не было соблюдено
+- проработка ошибок
+
 ## Что нужно знать
 
 - [Java](https://github.com/zhukovsd/java-backend-learning-course/Technologies/Java/) - коллекции, ООП

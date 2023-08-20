@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 @WebServlet("/currency/*")
-public class CurrencyByCodeServlet extends BaseServlet {
+public class CurrencyServlet extends BaseServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
