@@ -2,8 +2,10 @@ package com.farneser.servlets;
 
 import com.farneser.data.exceptions.InternalServerException;
 import com.farneser.data.exceptions.NotFoundException;
+import com.farneser.data.exceptions.UniqueConstraintException;
 import com.farneser.data.exceptions.ValueMissingException;
 import com.farneser.data.models.ErrorMessage;
+import com.farneser.data.models.ExchangeRate;
 import com.farneser.data.services.AppDbContext;
 import com.google.gson.Gson;
 import jakarta.servlet.annotation.WebServlet;
@@ -14,7 +16,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 @WebServlet("/exchangeRate/*")
-public class ExchangeRateByCodeServlet extends BaseServlet {
+public class ExchangeRateByCodeServlet extends PatchServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -58,5 +60,40 @@ public class ExchangeRateByCodeServlet extends BaseServlet {
         params.put("targetCurrency", id.substring(3, 6));
 
         return params;
+    }
+
+    @Override
+    protected void doPatch(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        var context = AppDbContext.getInstance();
+
+        var map = getBody(req);
+
+        try {
+
+            var rates = map.get("rate");
+
+            var params = getParams(req);
+
+            if (rates == null) {
+                returnError(resp, ErrorMessage.FormFieldMissingError);
+            } else {
+                var exchangeRate = context.exchangeRate
+                        .update(new ExchangeRate(
+                                params.get("baseCurrency"),
+                                params.get("targetCurrency"),
+                                Double.parseDouble(rates.get(0))));
+
+                var writer = resp.getWriter();
+
+                writer.write(exchangeRate.getSerialized());
+                writer.flush();
+            }
+        } catch (ValueMissingException e) {
+            returnError(resp, ErrorMessage.FormFieldMissingError);
+        } catch (InternalServerException | UniqueConstraintException e) {
+            returnError(resp, ErrorMessage.InternalServerError);
+        } catch (NotFoundException e) {
+            returnError(resp, ErrorMessage.ExchangeCodesNotFound);
+        }
     }
 }
