@@ -54,6 +54,12 @@ public class ExchangeRate extends BaseEntity {
         return _targetCurrency;
     }
 
+    public ExchangeRate(String baseCurrencyCode, String targetCurrencyCode, double rate){
+        _baseCurrency = new Currency(baseCurrencyCode, "", "");
+        _targetCurrency = new Currency(targetCurrencyCode, "", "");
+        _rate = rate;
+    }
+
     public ExchangeRate(int baseCurrencyId, int targetCurrencyId, double rate) {
         _baseCurrencyId = baseCurrencyId;
         _targetCurrencyId = targetCurrencyId;

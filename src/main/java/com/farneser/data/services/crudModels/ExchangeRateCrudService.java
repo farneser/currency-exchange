@@ -22,12 +22,30 @@ public class ExchangeRateCrudService extends CrudService<ExchangeRate> {
     }
 
     @Override
-    public ExchangeRate create(ExchangeRate obj) throws UniqueConstraintException, InternalServerException {
-        var id = create("INSERT INTO ExchangeRates (BaseCurrencyId, TargetCurrencyId, Rate) VALUES ('" + obj.getBaseCurrencyId() + "', '" + obj.getTargetCurrencyId() + "', '" + obj.getRate() + "') RETURNING ID;");
+    public ExchangeRate create(ExchangeRate obj) throws UniqueConstraintException, InternalServerException, ValueMissingException, NotFoundException {
+        create(
+                "INSERT INTO ExchangeRates (BaseCurrencyId, TargetCurrencyId, Rate)\n" +
+                        "SELECT Lesser, Bigger, " + obj.getRate() + "\n" +
+                        "FROM (SELECT CASE\n" +
+                        "                 WHEN id1 >= id2 THEN id2\n" +
+                        "                 WHEN id2 >= id1 THEN id1\n" +
+                        "                 ELSE id1\n" +
+                        "                 END AS Lesser,\n" +
+                        "             CASE\n" +
+                        "                 WHEN id1 <= id2 THEN id2\n" +
+                        "                 WHEN id2 <= id1 THEN id1\n" +
+                        "                 ELSE id2\n" +
+                        "                 END AS Bigger\n" +
+                        "      FROM (SELECT C1.ID as id1, C2.ID as id2\n" +
+                        "            FROM (SELECT ID FROM Currencies WHERE Code = '" + obj.getBaseCurrency().getCode() + "') AS C1\n" +
+                        "                     CROSS JOIN(SELECT ID FROM Currencies WHERE (Code = '" + obj.getTargetCurrency().getCode() + "')) AS C2));\n");
 
-        obj.setId(id);
+        var params = new HashMap<String, String>();
 
-        return obj;
+        params.put("baseCurrency", obj.getBaseCurrency().getCode());
+        params.put("targetCurrency", obj.getTargetCurrency().getCode());
+
+        return get(params).get(0);
     }
 
     @Override
