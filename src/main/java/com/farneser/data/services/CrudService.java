@@ -25,7 +25,7 @@ public abstract class CrudService<T extends BaseEntity> implements ICrud<T> {
         _tableName = tableName;
     }
 
-    protected int create(String execute) throws InternalServerException, UniqueConstraintException {
+    protected int executeQuery(String execute) throws InternalServerException, UniqueConstraintException {
         try {
             var preparedStatement = _connection.prepareStatement(execute);
 

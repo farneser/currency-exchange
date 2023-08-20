@@ -17,7 +17,7 @@ public class CurrencyCrudService extends CrudService<Currency> {
     @Override
     public Currency create(Currency obj) throws InternalServerException, UniqueConstraintException {
 
-        var id = create("INSERT INTO Currencies (Code, FullName, Sign) VALUES ('" + obj.getCode() + "', '" + obj.getFullName() + "', '" + obj.getSign() + "') RETURNING ID;");
+        var id = executeQuery("INSERT INTO Currencies (Code, FullName, Sign) VALUES ('" + obj.getCode() + "', '" + obj.getFullName() + "', '" + obj.getSign() + "') RETURNING ID;");
 
         obj.setId(id);
 

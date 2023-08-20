@@ -1,7 +1,9 @@
 package com.farneser.servlets;
 
 import com.farneser.data.exceptions.InternalServerException;
+import com.farneser.data.exceptions.NotFoundException;
 import com.farneser.data.exceptions.UniqueConstraintException;
+import com.farneser.data.exceptions.ValueMissingException;
 import com.farneser.data.models.Currency;
 import com.farneser.data.models.ErrorMessage;
 import com.farneser.data.services.AppDbContext;
@@ -54,11 +56,12 @@ public class CurrenciesServlet extends BaseServlet {
                 writer.write(currency.getSerialized());
                 writer.flush();
             }
-
-        } catch (InternalServerException e) {
+        } catch (InternalServerException | NotFoundException e) {
             returnError(resp, ErrorMessage.InternalServerError);
         } catch (UniqueConstraintException e) {
             returnError(resp, ErrorMessage.CurrencyAlreadyExistsError);
+        } catch (ValueMissingException e) {
+            returnError(resp, ErrorMessage.FormFieldMissingError);
         }
 
     }

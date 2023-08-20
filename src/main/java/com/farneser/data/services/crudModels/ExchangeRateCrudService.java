@@ -23,7 +23,7 @@ public class ExchangeRateCrudService extends CrudService<ExchangeRate> {
 
     @Override
     public ExchangeRate create(ExchangeRate obj) throws UniqueConstraintException, InternalServerException, ValueMissingException, NotFoundException {
-        create(
+        executeQuery(
                 "INSERT INTO ExchangeRates (BaseCurrencyId, TargetCurrencyId, Rate)\n" +
                         "SELECT Lesser, Bigger, " + obj.getRate() + "\n" +
                         "FROM (SELECT CASE\n" +
