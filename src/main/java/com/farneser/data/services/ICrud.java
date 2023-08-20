@@ -10,12 +10,26 @@ import java.util.HashMap;
 import java.util.List;
 
 public interface ICrud<T extends BaseEntity> {
+    /**
+     * method to create new entity
+     *
+     * @param obj instance of object that we want to save
+     * @return object T
+     * @throws InternalServerException in any server error
+     * @throws UniqueConstraintException in unique error (id already exists for example)
+     */
     T create(T obj) throws InternalServerException, UniqueConstraintException;
 
     void update(T obj);
 
     void delete(int id);
 
+    /**
+     * method to get all entities of type T
+     *
+     * @return the list of all objects T
+     * @throws InternalServerException on any server error
+     */
     List<T> get() throws InternalServerException;
 
     /**

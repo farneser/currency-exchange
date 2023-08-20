@@ -80,6 +80,77 @@
 					]
 				},
 				{
+					"name": "/currency/BTC",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"return array or error\", ()=>{",
+									"    pm.response.to.have.status(404 || 200);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/currency/BTC",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"currency",
+								"BTC"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "positive value missing",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/currency",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"currency"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json;charset=utf-8"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 18 Aug 2023 23:37:04 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Currency code missing\"\n}"
+						}
+					]
+				},
+				{
 					"name": "/currency/ value missing",
 					"event": [
 						{
@@ -353,6 +424,87 @@
 			]
 		},
 		{
+			"name": "/exchangeRates",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"return array or error\", ()=>{",
+							"",
+							"    const body = pm.response.json;",
+							"",
+							"    if (pm.response.status == 500){",
+							"        pm.expect(body.message).have()",
+							"    }",
+							"",
+							"    if (pm.response.status == 200){",
+							"        pm.expect(pm.response.json()).to.be.an('array').but.not.an('object')",
+							"    }",
+							"",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/exchangeRates",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"exchangeRates"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/exchangeRate/BTCBYN",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"return array or error\", ()=>{",
+							"",
+							"    const body = pm.response.json;",
+							"",
+							"    if (pm.response.status == 500){",
+							"        pm.expect(body.message).have()",
+							"    }",
+							"",
+							"    if (pm.response.status == 200){",
+							"        pm.expect(pm.response.json()).to.be.an('array').but.not.an('object')",
+							"    }",
+							"",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/exchangeRate/BYNBTC",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"exchangeRate",
+						"BYNBTC"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "/currencies",
 			"event": [
 				{
@@ -471,6 +623,72 @@
 					"body": "{\n    \"message\": \"Form field missing\"\n}"
 				},
 				{
+					"name": "negative (Form field missing)",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "bitcoin",
+									"type": "text"
+								},
+								{
+									"key": "code",
+									"value": "BTC",
+									"type": "text"
+								},
+								{
+									"key": "sign",
+									"value": "c",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "name",
+									"value": "ahaha",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/currencies",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"currencies"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=utf-8"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 18 Aug 2023 23:36:11 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Form field missing\"\n}"
+				},
+				{
 					"name": "positive",
 					"originalRequest": {
 						"method": "POST",
@@ -538,72 +756,6 @@
 					],
 					"cookie": [],
 					"body": "{\n    \"name\": \"bitcoin\",\n    \"code\": \"BTC\",\n    \"sign\": \"c\",\n    \"id\": 11\n}"
-				},
-				{
-					"name": "negative (Form field missing)",
-					"originalRequest": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
-								{
-									"key": "name",
-									"value": "bitcoin",
-									"type": "text"
-								},
-								{
-									"key": "code",
-									"value": "BTC",
-									"type": "text"
-								},
-								{
-									"key": "sign",
-									"value": "c",
-									"type": "text",
-									"disabled": true
-								},
-								{
-									"key": "name",
-									"value": "ahaha",
-									"type": "text",
-									"disabled": true
-								}
-							]
-						},
-						"url": {
-							"raw": "{{base_url}}/currencies",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"currencies"
-							]
-						}
-					},
-					"status": "Bad Request",
-					"code": 400,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "Content-Type",
-							"value": "application/json;charset=utf-8"
-						},
-						{
-							"key": "Transfer-Encoding",
-							"value": "chunked"
-						},
-						{
-							"key": "Date",
-							"value": "Fri, 18 Aug 2023 23:36:11 GMT"
-						},
-						{
-							"key": "Connection",
-							"value": "close"
-						}
-					],
-					"cookie": [],
-					"body": "{\n    \"message\": \"Form field missing\"\n}"
 				}
 			]
 		}

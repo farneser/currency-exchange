@@ -141,10 +141,10 @@ public abstract class CrudService<T extends BaseEntity> implements ICrud<T> {
             sql.set(sql.get() + " WHERE ");
 
             params.forEach((param, value) -> {
-                sql.set(sql.get() + param + "='" + value + "'");
+                sql.set(sql.get() + param + "='" + value + "' and ");
             });
 
-            sql.set(sql.get() + ";");
+            sql.set(sql.get().substring(0, sql.get().length() - 5) + ";");
 
             var preparedStatement = _connection.prepareStatement(sql.get(), Statement.RETURN_GENERATED_KEYS);
 
