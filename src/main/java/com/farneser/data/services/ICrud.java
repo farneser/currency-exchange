@@ -6,6 +6,7 @@ import com.farneser.data.exceptions.UniqueConstraintException;
 import com.farneser.data.exceptions.ValueMissingException;
 import com.farneser.data.models.BaseEntity;
 
+import java.util.HashMap;
 import java.util.List;
 
 public interface ICrud<T extends BaseEntity> {
@@ -28,15 +29,14 @@ public interface ICrud<T extends BaseEntity> {
     T get(int id) throws InternalServerException, ValueMissingException, NotFoundException;
 
     /**
-     * get T object by param and value (first or null)
+     * get List<T> objects by params and values (search, select first or default)
      *
-     * @param paramName define by which parameter we will search for the value
-     * @param value     define value of parameter which we use for search
+     * @param params define hashmap with param-value map
      * @return type object or null
      * @throws InternalServerException on any server errors (database unavailable for example)
      * @throws ValueMissingException   on missing or empty value
      */
-    T get(String paramName, String value) throws InternalServerException, ValueMissingException, NotFoundException;
+    List<T> get(HashMap<String, String> params) throws InternalServerException, ValueMissingException, NotFoundException;
 
     T deserialize(List<String> object) throws InternalServerException;
 }

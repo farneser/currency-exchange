@@ -11,7 +11,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 public abstract class CrudService<T extends BaseEntity> implements ICrud<T> {
     protected final Connection _connection;
@@ -108,33 +111,57 @@ public abstract class CrudService<T extends BaseEntity> implements ICrud<T> {
 
     @Override
     public T get(int id) throws InternalServerException, ValueMissingException, NotFoundException {
-        return get("id", String.valueOf(id));
+        var params = new HashMap<String, String>();
+
+        params.put("id", String.valueOf(id));
+
+        return get(params).get(0);
     }
 
     @Override
-    public T get(String paramName, String value) throws InternalServerException, ValueMissingException, NotFoundException {
+    public List<T> get(HashMap<String, String> params) throws InternalServerException, ValueMissingException, NotFoundException {
 
-        if (value.isEmpty()) {
+        var isEmpty = new AtomicBoolean(false);
+
+        params.forEach((param, value) -> {
+            if (value.isEmpty()) {
+                isEmpty.set(true);
+            }
+        });
+
+        if (isEmpty.get() || params.isEmpty()) {
             throw new ValueMissingException();
         }
 
         try {
-            var sql = "SELECT * FROM %s WHERE %s=?";
+            var sql = new AtomicReference<>("SELECT * FROM %s");
 
-            sql = String.format(sql, _tableName, paramName);
+            sql.set(String.format(sql.get(), _tableName));
 
-            var preparedStatement = _connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            sql.set(sql.get() + " WHERE ");
 
-            preparedStatement.setString(1, "'" + value + "'");
+            params.forEach((param, value) -> {
+                sql.set(sql.get() + param + "='" + value + "'");
+            });
+
+            sql.set(sql.get() + ";");
+
+            var preparedStatement = _connection.prepareStatement(sql.get(), Statement.RETURN_GENERATED_KEYS);
 
             var queryResult = preparedStatement.executeQuery();
 
+            var entities = new ArrayList<T>();
+
             for (var entity : getValuesFromQuery(queryResult)) {
-                return deserialize(entity);
+                entities.add(deserialize(entity));
             }
 
             queryResult.close();
             preparedStatement.close();
+
+            if (!entities.isEmpty()) {
+                return entities;
+            }
 
             throw new NotFoundException();
         } catch (SQLException e) {

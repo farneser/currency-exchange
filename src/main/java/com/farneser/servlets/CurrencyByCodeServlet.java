@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 @WebServlet("/currency/*")
 public class CurrencyByCodeServlet extends BaseServlet {
@@ -31,7 +32,11 @@ public class CurrencyByCodeServlet extends BaseServlet {
 
             var id = req.getPathInfo().substring(1);
 
-            writer.print(new Gson().toJson(context.currency.get("code", id)));
+            var params = new HashMap<String, String>();
+
+            params.put("code", id);
+
+            writer.print(new Gson().toJson(context.currency.get(params).get(0)));
             writer.flush();
 
         } catch (InternalServerException e) {
