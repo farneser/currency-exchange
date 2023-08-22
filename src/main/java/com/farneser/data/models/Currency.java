@@ -2,6 +2,8 @@ package com.farneser.data.models;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Objects;
+
 public class Currency extends BaseEntity {
     @SerializedName("name")
     private String _fullName;
@@ -43,5 +45,18 @@ public class Currency extends BaseEntity {
 
     public void setSign(String sing) {
         _sign = sing;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Currency currency = (Currency) o;
+        return Objects.equals(_fullName, currency._fullName) && Objects.equals(_code, currency._code) && Objects.equals(_sign, currency._sign);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(_fullName, _code, _sign);
     }
 }
