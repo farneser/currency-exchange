@@ -1,4 +1,4 @@
-package com.farneser.data.services.crudModels;
+package com.farneser.data.services.crud.crudModels;
 
 import com.farneser.data.exceptions.InternalServerException;
 import com.farneser.data.exceptions.NotFoundException;
@@ -6,7 +6,7 @@ import com.farneser.data.exceptions.UniqueConstraintException;
 import com.farneser.data.exceptions.ValueMissingException;
 import com.farneser.data.models.Currency;
 import com.farneser.data.models.ExchangeRate;
-import com.farneser.data.services.CrudService;
+import com.farneser.data.services.crud.CrudService;
 
 import java.sql.Connection;
 import java.util.HashMap;

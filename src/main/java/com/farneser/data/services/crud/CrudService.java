@@ -1,4 +1,4 @@
-package com.farneser.data.services;
+package com.farneser.data.services.crud;
 
 import com.farneser.data.exceptions.InternalServerException;
 import com.farneser.data.exceptions.NotFoundException;
