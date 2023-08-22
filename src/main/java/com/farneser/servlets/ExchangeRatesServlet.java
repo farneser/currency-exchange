@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 
 @WebServlet("/exchangeRates")
 public class ExchangeRatesServlet extends BaseServlet {
@@ -50,7 +51,7 @@ public class ExchangeRatesServlet extends BaseServlet {
             if (baseCurrencyCodes == null || targetCurrencyCodes == null || rates == null) {
                 returnError(resp, ErrorMessage.FormFieldMissingError);
             } else {
-                var exchangeRate = context.exchangeRate.create(new ExchangeRate(baseCurrencyCodes[0], targetCurrencyCodes[0], Double.parseDouble(rates[0])));
+                var exchangeRate = context.exchangeRate.create(new ExchangeRate(baseCurrencyCodes[0], targetCurrencyCodes[0], BigDecimal.valueOf(Double.parseDouble(rates[0]))));
 
                 var writer = resp.getWriter();
 

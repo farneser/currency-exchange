@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.HashMap;
 
 @WebServlet("/exchangeRate/*")
@@ -81,7 +82,7 @@ public class ExchangeRateServlet extends PatchServlet {
                         .update(new ExchangeRate(
                                 params.get("baseCurrency"),
                                 params.get("targetCurrency"),
-                                Double.parseDouble(rates.get(0))));
+                                BigDecimal.valueOf(Double.parseDouble(rates.get(0)))));
 
                 var writer = resp.getWriter();
 

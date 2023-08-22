@@ -2,64 +2,76 @@ package com.farneser.data.models;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 public class ExchangeRate extends BaseEntity {
     @SerializedName("baseCurrency")
     private Currency _baseCurrency;
-    private transient int _baseCurrencyId;
     @SerializedName("targetCurrency")
     private Currency _targetCurrency;
-    private transient int _targetCurrencyId;
     @SerializedName("rate")
-    private double _rate;
+    private BigDecimal _rate;
 
-    public ExchangeRate(String baseCurrencyCode, String targetCurrencyCode, double rate) {
+    public ExchangeRate(String baseCurrencyCode, String targetCurrencyCode, BigDecimal rate) {
         _baseCurrency = new Currency(baseCurrencyCode, "", "");
         _targetCurrency = new Currency(targetCurrencyCode, "", "");
         _rate = rate;
     }
 
-    public ExchangeRate(int baseCurrencyId, int targetCurrencyId, double rate) {
-        _baseCurrencyId = baseCurrencyId;
-        _targetCurrencyId = targetCurrencyId;
+    public ExchangeRate(int baseCurrencyId, int targetCurrencyId, BigDecimal rate) {
+        _baseCurrency = new Currency(baseCurrencyId, "", "", "");
+        _targetCurrency = new Currency(targetCurrencyId, "", "", "");
         _rate = rate;
     }
 
-    public ExchangeRate(int id, int baseCurrencyId, int targetCurrencyId, double rate) {
+    public ExchangeRate(int id, int baseCurrencyId, int targetCurrencyId, BigDecimal rate) {
         this(baseCurrencyId, targetCurrencyId, rate);
         _id = id;
     }
 
     public int getBaseCurrencyId() {
-        if (_baseCurrency != null && _baseCurrency.getId() != 0) {
-            _baseCurrencyId = _baseCurrency.getId();
+
+        if (_baseCurrency == null) {
+            return 0;
         }
 
-        return _baseCurrencyId;
+        return _baseCurrency._id;
+    }
+
+    public ExchangeRate(Currency baseCurrency, Currency targetCurrency, BigDecimal rate) {
+        _baseCurrency = baseCurrency;
+        _targetCurrency = targetCurrency;
+        _rate = rate;
     }
 
     public void setBaseCurrencyId(int baseCurrencyId) {
-        _baseCurrencyId = baseCurrencyId;
+        if (_baseCurrency == null) {
+            _baseCurrency = new Currency("", "", "");
+        }
+        _baseCurrency.setId(baseCurrencyId);
     }
 
     public int getTargetCurrencyId() {
-        if (_targetCurrency != null && _targetCurrency.getId() != 0) {
-            _targetCurrencyId = _targetCurrency.getId();
+        if (_targetCurrency == null) {
+            return 0;
         }
 
-        return _targetCurrencyId;
+        return _targetCurrency.getId();
     }
 
     public void setTargetCurrencyId(int targetCurrencyId) {
-        _targetCurrencyId = targetCurrencyId;
+        if (_targetCurrency == null) {
+            _baseCurrency = new Currency("", "", "");
+        }
+        _targetCurrency.setId(targetCurrencyId);
     }
 
-    public double getRate() {
+    public BigDecimal getRate() {
         return _rate;
     }
 
-    public void setRate(double rate) {
+    public void setRate(BigDecimal rate) {
         _rate = rate;
     }
 
@@ -68,7 +80,6 @@ public class ExchangeRate extends BaseEntity {
     }
 
     public void setBaseCurrency(Currency currency) {
-        _baseCurrencyId = currency.getId();
         _baseCurrency = currency;
     }
 
@@ -77,7 +88,6 @@ public class ExchangeRate extends BaseEntity {
     }
 
     public void setTargetCurrency(Currency currency) {
-        _targetCurrencyId = currency.getId();
         _targetCurrency = currency;
     }
 
@@ -86,11 +96,11 @@ public class ExchangeRate extends BaseEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ExchangeRate that = (ExchangeRate) o;
-        return _baseCurrencyId == that._baseCurrencyId && _targetCurrencyId == that._targetCurrencyId && Double.compare(_rate, that._rate) == 0;
+        return Objects.equals(_baseCurrency.getCode(), that._baseCurrency.getCode()) && Objects.equals(_targetCurrency.getCode(), that._targetCurrency.getCode());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(_baseCurrencyId, _targetCurrencyId, _rate);
+        return Objects.hash(_baseCurrency.getCode(), _targetCurrency.getCode(), _rate);
     }
 }

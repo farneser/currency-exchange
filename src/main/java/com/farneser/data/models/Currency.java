@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.Objects;
 
-public class Currency extends BaseEntity {
+public class Currency extends BaseEntity implements Comparable<Currency> {
     @SerializedName("name")
     private String _fullName;
     @SerializedName("code")
@@ -51,12 +51,17 @@ public class Currency extends BaseEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Currency currency = (Currency) o;
+        var currency = (Currency) o;
         return Objects.equals(_fullName, currency._fullName) && Objects.equals(_code, currency._code) && Objects.equals(_sign, currency._sign);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(_fullName, _code, _sign);
+        return Objects.hash(_code);
+    }
+
+    @Override
+    public int compareTo(Currency currency) {
+        return this._code.compareTo(currency.getCode());
     }
 }

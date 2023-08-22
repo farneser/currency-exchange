@@ -8,6 +8,7 @@ import com.farneser.data.models.Currency;
 import com.farneser.data.models.ExchangeRate;
 import com.farneser.data.services.crud.CrudService;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -78,7 +79,7 @@ public class ExchangeRateCrudService extends CrudService<ExchangeRate> {
     @Override
     public List<ExchangeRate> get() throws InternalServerException {
 
-        var sql = "SELECT * FROM ExchangeRates JOIN main.Currencies baseCurrency on baseCurrency.ID = ExchangeRates.BaseCurrencyId JOIN main.Currencies targetCurrency on targetCurrency.ID = ExchangeRates.BaseCurrencyId";
+        var sql = "SELECT * FROM ExchangeRates JOIN main.Currencies C on ExchangeRates.BaseCurrencyId = C.ID JOIN main.Currencies C2 on ExchangeRates.TargetCurrencyId = C2.ID;";
 
         var result = new ArrayList<ExchangeRate>();
 
@@ -146,7 +147,7 @@ public class ExchangeRateCrudService extends CrudService<ExchangeRate> {
     @Override
     public ExchangeRate deserialize(List<String> object) {
 
-        var exchangeRate = new ExchangeRate(Integer.parseInt(object.get(0)), Integer.parseInt(object.get(1)), Integer.parseInt(object.get(2)), Double.parseDouble(object.get(3)));
+        var exchangeRate = new ExchangeRate(Integer.parseInt(object.get(0)), Integer.parseInt(object.get(1)), Integer.parseInt(object.get(2)), BigDecimal.valueOf(Double.parseDouble(object.get(3))));
 
         exchangeRate.setBaseCurrency(new Currency(Integer.parseInt(object.get(4)), object.get(5), object.get(6), object.get(7)));
         exchangeRate.setTargetCurrency(new Currency(Integer.parseInt(object.get(8)), object.get(9), object.get(10), object.get(11)));
