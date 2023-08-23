@@ -52,7 +52,7 @@ public class Currency extends BaseEntity implements Comparable<Currency> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         var currency = (Currency) o;
-        return Objects.equals(_fullName, currency._fullName) && Objects.equals(_code, currency._code) && Objects.equals(_sign, currency._sign);
+        return Objects.equals(_code, currency._code);
     }
 
     @Override
