@@ -6,7 +6,9 @@ import com.farneser.data.exceptions.UniqueConstraintException;
 import com.farneser.data.exceptions.ValueMissingException;
 import com.farneser.data.models.Currency;
 import com.farneser.data.models.ExchangeRate;
+import com.farneser.data.services.crud.AppDbContext;
 import com.farneser.data.services.crud.CrudService;
+import com.farneser.data.services.crud.ICrud;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -24,22 +26,39 @@ public class ExchangeRateCrudService extends CrudService<ExchangeRate> {
 
     @Override
     public ExchangeRate create(ExchangeRate obj) throws UniqueConstraintException, InternalServerException, ValueMissingException, NotFoundException {
-        executeQuery(
-                "INSERT INTO ExchangeRates (BaseCurrencyId, TargetCurrencyId, Rate)\n" +
-                        "SELECT Lesser, Bigger, " + obj.getRate() + "\n" +
-                        "FROM (SELECT CASE\n" +
-                        "                 WHEN id1 >= id2 THEN id2\n" +
-                        "                 WHEN id2 >= id1 THEN id1\n" +
-                        "                 ELSE id1\n" +
-                        "                 END AS Lesser,\n" +
-                        "             CASE\n" +
-                        "                 WHEN id1 <= id2 THEN id2\n" +
-                        "                 WHEN id2 <= id1 THEN id1\n" +
-                        "                 ELSE id2\n" +
-                        "                 END AS Bigger\n" +
-                        "      FROM (SELECT C1.ID as id1, C2.ID as id2\n" +
-                        "            FROM (SELECT ID FROM Currencies WHERE Code = '" + obj.getBaseCurrency().getCode() + "') AS C1\n" +
-                        "                     CROSS JOIN(SELECT ID FROM Currencies WHERE (Code = '" + obj.getTargetCurrency().getCode() + "')) AS C2));\n");
+
+        try {
+
+            var params = new HashMap<String, String>();
+
+            params.put("baseCurrency", obj.getTargetCurrency().getCode());
+            params.put("targetCurrency", obj.getBaseCurrency().getCode());
+
+            // if getFirst does not raise an error, then it is not found, and it will be caught,
+            // if found, uniqueness exceptions will be raised
+            getFirst(params);
+
+            throw new UniqueConstraintException();
+
+        } catch (NotFoundException e) {
+
+            try {
+
+                var sql = "INSERT INTO ExchangeRates (BaseCurrencyId, TargetCurrencyId, Rate) VALUES (?, ?, ?)";
+
+                var statement = _connection.prepareStatement(sql);
+
+                statement.setString(1, obj.getBaseCurrency().getCode());
+                statement.setString(2, obj.getTargetCurrency().getCode());
+                statement.setString(3, obj.getRate().toString());
+
+                executeQuery(statement);
+
+            } catch (SQLException ex) {
+                throw new InternalServerException();
+            }
+
+        }
 
         var params = new HashMap<String, String>();
 
@@ -138,7 +157,7 @@ public class ExchangeRateCrudService extends CrudService<ExchangeRate> {
             preparedState.close();
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new InternalServerException();
         }
 
         return result;
@@ -153,5 +172,33 @@ public class ExchangeRateCrudService extends CrudService<ExchangeRate> {
         exchangeRate.setTargetCurrency(new Currency(Integer.parseInt(object.get(8)), object.get(9), object.get(10), object.get(11)));
 
         return exchangeRate;
+    }
+
+    private static Currency getCurrency(String code, ICrud<Currency> service) throws InternalServerException, ValueMissingException, NotFoundException {
+
+        var params = new HashMap<String, String>();
+
+        params.put("code", code);
+
+        return service.get(params).get(0);
+    }
+
+    public static void main(String[] args) {
+        var context = AppDbContext.getInstance();
+
+        try {
+
+            var byn = getCurrency("BYN", context.currency);
+            var btc = getCurrency("BTC", context.currency);
+            var pln = getCurrency("PLN", context.currency);
+
+            context.exchangeRate.create(new ExchangeRate(byn, btc, BigDecimal.ONE));
+            context.exchangeRate.create(new ExchangeRate(btc, byn, BigDecimal.ONE));
+            context.exchangeRate.create(new ExchangeRate(pln, byn, BigDecimal.ONE));
+
+        } catch (InternalServerException | ValueMissingException | NotFoundException | UniqueConstraintException e) {
+            System.out.println("problems");
+        }
+
     }
 }
