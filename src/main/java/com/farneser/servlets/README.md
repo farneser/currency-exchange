@@ -210,7 +210,7 @@ HTTP коды ответов:
 
 ### Обмен валюты
 
-#### GET `/exchange?from=BASE_CURRENCY_CODE&to=TARGET_CURRENCY_CODE&amount=$AMOUNT`
+#### GET [`/exchange?from=BASE_CURRENCY_CODE&to=TARGET_CURRENCY_CODE&amount=$AMOUNT`](ExchangeServlet.java)
 
 Расчёт перевода определённого количества средств из одной валюты в другую. Пример запроса -
 GET `/exchange?from=USD&to=AUD&amount=10`.
