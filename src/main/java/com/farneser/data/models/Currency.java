@@ -13,7 +13,7 @@ public class Currency extends BaseEntity implements Comparable<Currency> {
     private String _sign;
 
     public Currency(String code, String fullName, String sign) {
-        _code = code;
+        _code = code.toUpperCase();
         _fullName = fullName;
         _sign = sign;
     }

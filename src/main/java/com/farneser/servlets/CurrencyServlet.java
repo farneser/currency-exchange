@@ -33,11 +33,11 @@ public class CurrencyServlet extends BaseServlet {
                 throw new ValueMissingException();
             }
 
-            var id = req.getPathInfo().substring(1);
+            var code = req.getPathInfo().substring(1);
 
             var params = new HashMap<String, String>();
 
-            params.put("code", id);
+            params.put("code", code.toUpperCase());
 
             writer.print(new Gson().toJson(context.currency.get(params).get(0)));
             writer.flush();

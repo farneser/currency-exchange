@@ -32,8 +32,8 @@ public class ExchangeRateServlet extends PatchServlet {
 
         var params = new HashMap<String, String>();
 
-        params.put("baseCurrency", id.substring(0, 3));
-        params.put("targetCurrency", id.substring(3, 6));
+        params.put("baseCurrency", id.substring(0, 3).toUpperCase());
+        params.put("targetCurrency", id.substring(3, 6).toUpperCase());
 
         return params;
     }
