@@ -6,10 +6,7 @@ import com.farneser.data.exceptions.UniqueConstraintException;
 import com.farneser.data.exceptions.ValueMissingException;
 import com.farneser.data.models.BaseEntity;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,13 +22,11 @@ public abstract class CrudService<T extends BaseEntity> implements ICrud<T> {
         _tableName = tableName;
     }
 
-    protected void executeQuery(String execute) throws InternalServerException, UniqueConstraintException {
+    protected void executeQuery(PreparedStatement statement) throws UniqueConstraintException, InternalServerException {
         try {
-            var preparedStatement = _connection.prepareStatement(execute);
+            statement.execute();
 
-            preparedStatement.execute();
-
-            preparedStatement.close();
+            statement.close();
 
         } catch (SQLException e) {
             // 19 - [SQLITE_CONSTRAINT_UNIQUE] A UNIQUE constraint failed
@@ -39,6 +34,18 @@ public abstract class CrudService<T extends BaseEntity> implements ICrud<T> {
                 throw new UniqueConstraintException();
             }
 
+            throw new InternalServerException();
+        }
+
+    }
+
+    protected void executeQuery(String execute) throws InternalServerException, UniqueConstraintException {
+        try {
+            var preparedStatement = _connection.prepareStatement(execute);
+
+            executeQuery(preparedStatement);
+
+        } catch (SQLException e) {
             throw new InternalServerException();
         }
     }
