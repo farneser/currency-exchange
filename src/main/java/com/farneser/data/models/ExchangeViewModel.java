@@ -9,9 +9,8 @@ public class ExchangeViewModel extends ExchangeRate {
     private final BigDecimal _amount;
     @SerializedName("convertedAmount")
     private final BigDecimal _convertedAmount;
-
-    public ExchangeViewModel(String baseCurrencyCode, String targetCurrencyCode, BigDecimal rate, BigDecimal amount, BigDecimal convertedAmount) {
-        super(baseCurrencyCode, targetCurrencyCode, rate);
+    public ExchangeViewModel(Currency baseCurrency, Currency targetCurrency, BigDecimal amount, BigDecimal convertedAmount) {
+        super(baseCurrency, targetCurrency, BigDecimal.valueOf(amount.doubleValue()/convertedAmount.doubleValue()));
         _convertedAmount = convertedAmount;
         _amount = amount;
     }
