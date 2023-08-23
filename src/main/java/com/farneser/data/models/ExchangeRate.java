@@ -103,4 +103,13 @@ public class ExchangeRate extends BaseEntity {
     public int hashCode() {
         return Objects.hash(_baseCurrency.getCode(), _targetCurrency.getCode(), _rate);
     }
+
+    @Override
+    public String toString() {
+        return "ExchangeRate{" +
+                "baseCurrency=" + _baseCurrency +
+                ", targetCurrency=" + _targetCurrency +
+                ", rate=" + _rate +
+                '}';
+    }
 }

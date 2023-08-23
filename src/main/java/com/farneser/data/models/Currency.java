@@ -64,4 +64,14 @@ public class Currency extends BaseEntity implements Comparable<Currency> {
     public int compareTo(Currency currency) {
         return this._code.compareTo(currency.getCode());
     }
+
+    @Override
+    public String toString() {
+        return "Currency{" +
+                "id='" + _id + '\'' +
+                ", fullName='" + _fullName + '\'' +
+                ", code='" + _code + '\'' +
+                ", sign='" + _sign + '\'' +
+                '}';
+    }
 }
