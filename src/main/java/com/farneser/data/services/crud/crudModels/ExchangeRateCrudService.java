@@ -44,13 +44,18 @@ public class ExchangeRateCrudService extends CrudService<ExchangeRate> {
 
             try {
 
-                var sql = "INSERT INTO ExchangeRates (BaseCurrencyId, TargetCurrencyId, Rate) VALUES (?, ?, ?)";
+                var sql =
+                        "INSERT INTO ExchangeRates (BaseCurrencyId, TargetCurrencyId, Rate) \n" +
+                        "SELECT id1, id2, ? \n" +
+                        "FROM (SELECT C1.ID as id1, C2.ID as id2 \n" +
+                        "      FROM (SELECT ID FROM Currencies WHERE Code = ?) AS C1 \n" +
+                        "               CROSS JOIN(SELECT ID FROM Currencies WHERE (Code = ?)) AS C2); \n";
 
                 var statement = _connection.prepareStatement(sql);
 
-                statement.setString(1, obj.getBaseCurrency().getCode());
-                statement.setString(2, obj.getTargetCurrency().getCode());
-                statement.setString(3, obj.getRate().toString());
+                statement.setString(1, obj.getRate().toString());
+                statement.setString(2, obj.getBaseCurrency().getCode());
+                statement.setString(3, obj.getTargetCurrency().getCode());
 
                 executeQuery(statement);
 
