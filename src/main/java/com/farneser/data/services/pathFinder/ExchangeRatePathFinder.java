@@ -23,6 +23,40 @@ public class ExchangeRatePathFinder {
         exchangeRates.forEach(e -> addExchangeRate(e.getBaseCurrency(), e.getTargetCurrency(), e.getRate()));
     }
 
+    public static void main(String[] args) {
+
+        var context = AppDbContext.getInstance();
+
+        try {
+            var er = context.exchangeRate.get();
+
+            var pathFinder = new ExchangeRatePathFinder(er);
+
+            var params = new HashMap<String, String>();
+
+            params.put("code", "BTC");
+
+            var c1 = context.currency.get(params).get(0);
+
+            params.clear();
+            params.put("code", "BYN");
+
+            var c2 = context.currency.get(params).get(0);
+
+            try {
+                var path = pathFinder.findPath(c1, c2);
+                System.out.println("Путь от " + c2.getCode() + " до " + c1.getCode() + ": " + path.stream().map(Currency::getCode).toList());
+
+            } catch (NotFoundException e) {
+                System.out.println("Путь не найден.");
+            }
+
+
+        } catch (InternalServerException | ValueMissingException | NotFoundException e) {
+            System.out.println("error");
+        }
+    }
+
     public void addExchangeRate(Currency fromCurrency, Currency toCurrency, BigDecimal rate) {
         _addExchangeRate(fromCurrency, toCurrency, rate);
         _addExchangeRate(toCurrency, fromCurrency, BigDecimal.ONE.divide(rate, 10, RoundingMode.HALF_UP));
@@ -70,39 +104,5 @@ public class ExchangeRatePathFinder {
         Collections.reverse(path);
 
         return path;
-    }
-
-    public static void main(String[] args) {
-
-        var context = AppDbContext.getInstance();
-
-        try {
-            var er = context.exchangeRate.get();
-
-            var pathFinder = new ExchangeRatePathFinder(er);
-
-            var params = new HashMap<String, String>();
-
-            params.put("code", "BTC");
-
-            var c1 = context.currency.get(params).get(0);
-
-            params.clear();
-            params.put("code", "BYN");
-
-            var c2 = context.currency.get(params).get(0);
-
-            try {
-                var path = pathFinder.findPath(c1, c2);
-                System.out.println("Путь от " + c2.getCode() + " до " + c1.getCode() + ": " + path.stream().map(Currency::getCode).toList());
-
-            } catch (NotFoundException e) {
-                System.out.println("Путь не найден.");
-            }
-
-
-        } catch (InternalServerException | ValueMissingException | NotFoundException e) {
-            System.out.println("error");
-        }
     }
 }

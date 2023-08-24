@@ -1,4 +1,3 @@
-
 package com.farneser.servlets;
 
 import com.farneser.data.exceptions.InternalServerException;

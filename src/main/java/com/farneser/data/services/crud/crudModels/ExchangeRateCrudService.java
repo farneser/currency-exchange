@@ -24,6 +24,34 @@ public class ExchangeRateCrudService extends CrudService<ExchangeRate> {
         super(connection, "ExchangeRates");
     }
 
+    private static Currency getCurrency(String code, ICrud<Currency> service) throws InternalServerException, ValueMissingException, NotFoundException {
+
+        var params = new HashMap<String, String>();
+
+        params.put("code", code);
+
+        return service.get(params).get(0);
+    }
+
+    public static void main(String[] args) {
+        var context = AppDbContext.getInstance();
+
+        try {
+
+            var byn = getCurrency("BYN", context.currency);
+            var btc = getCurrency("BTC", context.currency);
+            var pln = getCurrency("PLN", context.currency);
+
+            context.exchangeRate.create(new ExchangeRate(byn, btc, BigDecimal.ONE));
+            context.exchangeRate.create(new ExchangeRate(btc, byn, BigDecimal.ONE));
+            context.exchangeRate.create(new ExchangeRate(pln, byn, BigDecimal.ONE));
+
+        } catch (InternalServerException | ValueMissingException | NotFoundException | UniqueConstraintException e) {
+            System.out.println("problems");
+        }
+
+    }
+
     @Override
     public ExchangeRate create(ExchangeRate obj) throws UniqueConstraintException, InternalServerException, ValueMissingException, NotFoundException {
 
@@ -148,9 +176,9 @@ public class ExchangeRateCrudService extends CrudService<ExchangeRate> {
 
             var sql =
                     """
-                            SELECT * FROM ExchangeRates 
-                            JOIN main.Currencies base ON ExchangeRates.BaseCurrencyId = base.ID 
-                            JOIN main.Currencies target ON ExchangeRates.TargetCurrencyId = target.ID 
+                            SELECT * FROM ExchangeRates
+                            JOIN main.Currencies base ON ExchangeRates.BaseCurrencyId = base.ID
+                            JOIN main.Currencies target ON ExchangeRates.TargetCurrencyId = target.ID
                             WHERE base.Code = ? AND target.Code = ? OR base.Code = ? AND target.Code = ?;
                             """;
 
@@ -186,33 +214,5 @@ public class ExchangeRateCrudService extends CrudService<ExchangeRate> {
         exchangeRate.setTargetCurrency(new Currency(Integer.parseInt(object.get(8)), object.get(9), object.get(10), object.get(11)));
 
         return exchangeRate;
-    }
-
-    private static Currency getCurrency(String code, ICrud<Currency> service) throws InternalServerException, ValueMissingException, NotFoundException {
-
-        var params = new HashMap<String, String>();
-
-        params.put("code", code);
-
-        return service.get(params).get(0);
-    }
-
-    public static void main(String[] args) {
-        var context = AppDbContext.getInstance();
-
-        try {
-
-            var byn = getCurrency("BYN", context.currency);
-            var btc = getCurrency("BTC", context.currency);
-            var pln = getCurrency("PLN", context.currency);
-
-            context.exchangeRate.create(new ExchangeRate(byn, btc, BigDecimal.ONE));
-            context.exchangeRate.create(new ExchangeRate(btc, byn, BigDecimal.ONE));
-            context.exchangeRate.create(new ExchangeRate(pln, byn, BigDecimal.ONE));
-
-        } catch (InternalServerException | ValueMissingException | NotFoundException | UniqueConstraintException e) {
-            System.out.println("problems");
-        }
-
     }
 }

@@ -10,6 +10,7 @@ public class ExchangeViewModel extends ExchangeRate {
     private final BigDecimal _amount;
     @SerializedName("convertedAmount")
     private final BigDecimal _convertedAmount;
+
     public ExchangeViewModel(Currency baseCurrency, Currency targetCurrency, BigDecimal amount, BigDecimal convertedAmount) {
         super(baseCurrency, targetCurrency, convertedAmount.divide(amount, RoundingMode.HALF_DOWN));
         _convertedAmount = convertedAmount;

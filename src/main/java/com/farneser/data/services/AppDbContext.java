@@ -77,7 +77,7 @@ public class AppDbContext {
             state.close();
 
 
-            if (linesCount == 0){
+            if (linesCount == 0) {
                 state = conn.createStatement();
 
                 state.execute("DELETE FROM main.ExchangeRates;");
@@ -96,25 +96,31 @@ public class AppDbContext {
     }
 
     private void initDataBase(Connection connection) throws SQLException {
-        var currenciesSql = "insert into main.Currencies (ID, Code, FullName, Sign)\n" +
-                "values  (1, 'USD', 'US Dollar', '$'),\n" +
-                "        (2, 'EUR', 'Euro', '€'),\n" +
-                "        (3, 'JPY', 'Yen', '¥'),\n" +
-                "        (4, 'GBP', 'Pound Sterling', '£'),\n" +
-                "        (5, 'AUD', 'Australian Dollar', 'A$'),\n" +
-                "        (6, 'RUB', 'Russian Ruble', '₽');";
+        var currenciesSql =
+                """
+                        insert into main.Currencies (ID, Code, FullName, Sign)
+                        values  (1, 'USD', 'US Dollar', '$'),
+                                (2, 'EUR', 'Euro', '€'),
+                                (3, 'JPY', 'Yen', '¥'),
+                                (4, 'GBP', 'Pound Sterling', '£'),
+                                (5, 'AUD', 'Australian Dollar', 'A$'),
+                                (6, 'RUB', 'Russian Ruble', '₽');
+                                """;
 
 
-        var exchangeRatesSql = "insert into main.ExchangeRates (ID, BaseCurrencyId, TargetCurrencyId, Rate)\n" +
-                "values  (1, 6, 1, 0.011),\n" +
-                "        (2, 6, 2, 0.0097),\n" +
-                "        (3, 6, 3, 1.53),\n" +
-                "        (4, 6, 4, 0.0082),\n" +
-                "        (5, 6, 5, 0.016),\n" +
-                "        (6, 1, 2, 0.92),\n" +
-                "        (7, 1, 3, 145.16),\n" +
-                "        (8, 1, 4, 0.78),\n" +
-                "        (9, 1, 6, 95.2);";
+        var exchangeRatesSql =
+                """
+                        insert into main.ExchangeRates (ID, BaseCurrencyId, TargetCurrencyId, Rate)
+                        values  (1, 6, 1, 0.011),
+                                (2, 6, 2, 0.0097),
+                                (3, 6, 3, 1.53),
+                                (4, 6, 4, 0.0082),
+                                (5, 6, 5, 0.016),
+                                (6, 1, 2, 0.92),
+                                (7, 1, 3, 145.16),
+                                (8, 1, 4, 0.78),
+                                (9, 1, 6, 95.2);
+                                """;
 
 
         var state = connection.createStatement();

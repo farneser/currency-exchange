@@ -30,6 +30,12 @@ public class ExchangeRate extends BaseEntity {
         _id = id;
     }
 
+    public ExchangeRate(Currency baseCurrency, Currency targetCurrency, BigDecimal rate) {
+        _baseCurrency = baseCurrency;
+        _targetCurrency = targetCurrency;
+        _rate = rate;
+    }
+
     public int getBaseCurrencyId() {
 
         if (_baseCurrency == null) {
@@ -37,12 +43,6 @@ public class ExchangeRate extends BaseEntity {
         }
 
         return _baseCurrency._id;
-    }
-
-    public ExchangeRate(Currency baseCurrency, Currency targetCurrency, BigDecimal rate) {
-        _baseCurrency = baseCurrency;
-        _targetCurrency = targetCurrency;
-        _rate = rate;
     }
 
     public void setBaseCurrencyId(int baseCurrencyId) {
