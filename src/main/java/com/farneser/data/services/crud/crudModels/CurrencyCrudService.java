@@ -9,6 +9,7 @@ import com.farneser.data.models.ExchangeRate;
 import com.farneser.data.services.crud.CrudService;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -21,7 +22,24 @@ public class CurrencyCrudService extends CrudService<Currency> {
     @Override
     public Currency create(Currency obj) throws InternalServerException, UniqueConstraintException, ValueMissingException, NotFoundException {
 
-        executeQuery("INSERT INTO Currencies (Code, FullName, Sign) VALUES ('" + obj.getCode() + "', '" + obj.getFullName() + "', '" + obj.getSign() + "') RETURNING ID;");
+        try {
+            var state = _connection.prepareStatement(
+                    """
+                            INSERT INTO Currencies (Code, FullName, Sign) VALUES (?, ?, ?) RETURNING ID;
+                            """);
+
+            state.setString(1, obj.getCode());
+            state.setString(2, obj.getFullName());
+            state.setString(3, obj.getSign());
+
+            executeQuery(state);
+
+            state.close();
+
+        } catch (SQLException e) {
+            throw new InternalServerException();
+        }
+
         var params = new HashMap<String, String>();
 
         params.put("code", obj.getCode());

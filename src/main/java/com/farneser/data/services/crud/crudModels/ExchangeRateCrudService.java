@@ -45,11 +45,13 @@ public class ExchangeRateCrudService extends CrudService<ExchangeRate> {
             try {
 
                 var sql =
-                        "INSERT INTO ExchangeRates (BaseCurrencyId, TargetCurrencyId, Rate) \n" +
-                        "SELECT id1, id2, ? \n" +
-                        "FROM (SELECT C1.ID as id1, C2.ID as id2 \n" +
-                        "      FROM (SELECT ID FROM Currencies WHERE Code = ?) AS C1 \n" +
-                        "               CROSS JOIN(SELECT ID FROM Currencies WHERE (Code = ?)) AS C2); \n";
+                        """
+                                INSERT INTO ExchangeRates (BaseCurrencyId, TargetCurrencyId, Rate)\s
+                                SELECT id1, id2, ?\s
+                                FROM (SELECT C1.ID as id1, C2.ID as id2\s
+                                      FROM (SELECT ID FROM Currencies WHERE Code = ?) AS C1\s
+                                               CROSS JOIN(SELECT ID FROM Currencies WHERE (Code = ?)) AS C2);\s
+                                """;
 
                 var statement = _connection.prepareStatement(sql);
 
@@ -103,7 +105,12 @@ public class ExchangeRateCrudService extends CrudService<ExchangeRate> {
     @Override
     public List<ExchangeRate> get() throws InternalServerException {
 
-        var sql = "SELECT * FROM ExchangeRates JOIN main.Currencies C on ExchangeRates.BaseCurrencyId = C.ID JOIN main.Currencies C2 on ExchangeRates.TargetCurrencyId = C2.ID;";
+        var sql =
+                """
+                        SELECT * FROM ExchangeRates
+                        JOIN main.Currencies C on ExchangeRates.BaseCurrencyId = C.ID
+                        JOIN main.Currencies C2 on ExchangeRates.TargetCurrencyId = C2.ID;
+                        """;
 
         var result = new ArrayList<ExchangeRate>();
 
@@ -140,10 +147,12 @@ public class ExchangeRateCrudService extends CrudService<ExchangeRate> {
         try {
 
             var sql =
-                    "SELECT * FROM ExchangeRates " +
-                            "JOIN main.Currencies base ON ExchangeRates.BaseCurrencyId = base.ID " +
-                            "JOIN main.Currencies target ON ExchangeRates.TargetCurrencyId = target.ID " +
-                            "WHERE base.Code = ? AND target.Code = ? OR base.Code = ? AND target.Code = ?;";
+                    """
+                            SELECT * FROM ExchangeRates 
+                            JOIN main.Currencies base ON ExchangeRates.BaseCurrencyId = base.ID 
+                            JOIN main.Currencies target ON ExchangeRates.TargetCurrencyId = target.ID 
+                            WHERE base.Code = ? AND target.Code = ? OR base.Code = ? AND target.Code = ?;
+                            """;
 
             var preparedState = _connection.prepareStatement(sql);
 
