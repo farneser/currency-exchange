@@ -13,15 +13,14 @@ REST API для описания валют и обменных курсов. П
 
 - Сборка происходит в формат [War (WebArchive)](https://www.geeksforgeeks.org/servlet-war-file/)
 - Веб сервер для запуска War файла [Tomcat 1.1.12](https://tomcat.apache.org/download-10.cgi)
-- Мини веб приложения для расширения или реализации
+- Реализация Веб апи без фреймворков
   функционала [Servlet](https://mvnrepository.com/artifact/jakarta.servlet/jakarta.servlet-api)
 - Описание всех точек апи [docs](/src/main/java/com/farneser/servlets/README.md)
-- Возможно введение простого клиента
+- Реализован простой клиент
 
 ## Примечания / требования
 
 - ACID не было соблюдено
-- проработка ошибок
 
 ## Что нужно знать
 
