@@ -3,23 +3,24 @@
 <head>
     <title>Web Api</title>
 </head>
+
 <body style="display: flex; justify-content: space-around; flex-wrap: wrap;">
 
-<div class="currencies__list">
+<div class="flex__item">
 
     <script>
         const getCurrencyBlock = (currency) => {
-            let line = document.createElement("tr")
+            const line = document.createElement("tr")
 
-            let code = document.createElement("td");
+            const code = document.createElement("td");
             code.innerText = currency["code"]
             line.append(code);
 
-            let name = document.createElement("td");
+            const name = document.createElement("td");
             name.innerText = currency["name"]
             line.append(name);
 
-            let sign = document.createElement("td");
+            const sign = document.createElement("td");
             sign.innerText = currency["sign"]
             line.append(sign);
 
@@ -27,24 +28,74 @@
         }
 
         const getExchangeRateBlock = (exchangeRate) => {
-            let line = document.createElement("tr")
+            const line = document.createElement("tr")
 
-            let code = document.createElement("td");
-            code.innerText = exchangeRate["baseCurrency"]["code"] + exchangeRate["targetCurrency"]["code"];
+            const currenciesCode = exchangeRate.baseCurrency.code + exchangeRate.targetCurrency.code;
+
+            const code = document.createElement("td");
+            code.innerText = currenciesCode;
             line.append(code);
 
-            let rate = document.createElement("td");
+            const rate = document.createElement("td");
             rate.innerText = exchangeRate["rate"];
+            rate.classList = "rate";
             line.append(rate);
 
-            let edit = document.createElement("button");
+            const edit = document.createElement("button");
             edit.innerHTML = "edit"
             line.append(edit);
+            edit.id = "edit_" + currenciesCode;
+            edit.addEventListener("click", editRate);
 
+            line.id = "exchangeRate_" + currenciesCode;
             return line;
+        }
+
+        const editRate = (event) => {
+            const id = event.target.id.substring(5);
+
+            const rate = prompt("Enter new rate:");
+
+            if (rate == null || rate === "" || parseFloat(rate) === 0) {
+                alert("Please enter double value")
+                return;
+            }
+
+            const details = {
+                'rate': rate
+            };
+
+            let formBody = [];
+
+            for (const property in details) {
+                const encodedKey = encodeURIComponent(property);
+                const encodedValue = encodeURIComponent(details[property]);
+                formBody.push(encodedKey + "=" + encodedValue);
+            }
+
+            formBody = formBody.join("&");
+
+            fetch(window.location.pathname + "exchangeRate/" + id,
+                {
+                    method: "PATCH",
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                    },
+                    body: formBody,
+                })
+                .then(d => d.json())
+                .then(r => {
+
+
+                    const exchangeRate = document.getElementById("exchangeRate_" + id).getElementsByClassName("rate")[0];
+
+                    exchangeRate.innerText = r.rate;
+
+                });
         }
     </script>
 
+    <h1>Currencies list</h1>
 
     <table id="currencies">
         <tr>
@@ -69,7 +120,10 @@
     </script>
 </div>
 
-<div class="exchangeRates__list">
+<div class="flex__item">
+
+    <h1>Exchange rates list</h1>
+
     <table id="exchangeRates">
         <tr>
             <th>Currency</th>
@@ -95,7 +149,7 @@
     </script>
 </div>
 
-<div class="addCurrency">
+<div class="flex__item">
 
     <iframe name="currenciesFrame" id="currenciesFrame" style="display: none;"></iframe>
 
@@ -140,7 +194,8 @@
     </form>
 </div>
 
-<div class="addExchangeRate">
+<div class="flex__item">
+
     <iframe name="exchangeRatesFrame" id="exchangeRatesFrame" style="display: none;"></iframe>
 
     <script>
@@ -184,7 +239,8 @@
     </form>
 </div>
 
-<div class="conversion">
+<div class="flex__item">
+
     <iframe name="conversionFrame" id="conversionFrame" style="display: none;"></iframe>
 
     <script>
@@ -203,7 +259,7 @@
                 return;
             }
 
-            converted.innerText = "Converted: " + response.amount + " " + response.baseCurrency.code + " to " + response.targetCurrency.code + " with  converted amount - " + response.convertedAmount;
+            converted.innerText = "Converted: " + response.amount + " " + response.baseCurrency.code + " to " + response.targetCurrency.code + " - " + response.convertedAmount;
 
         })
 
@@ -231,5 +287,13 @@
     </form>
     <div id="converted">Converted:</div>
 </div>
+
+<style>
+    .flex__item {
+        margin-left: 1%;
+        margin-right: 1%;
+    }
+</style>
+
 </body>
 </html>
