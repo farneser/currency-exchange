@@ -43,8 +43,8 @@ public class Currency extends BaseEntity implements Comparable<Currency> {
         return _sign;
     }
 
-    public void setSign(String sing) {
-        _sign = sing;
+    public void setSign(String sign) {
+        _sign = sign;
     }
 
     @Override
