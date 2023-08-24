@@ -1,14 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Tomcat 10.1.12" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 10.1.12" ALTERNATIVE_JRE_ENABLED="false">
-    <option name="OPEN_IN_BROWSER" value="false" />
     <option name="UPDATING_POLICY" value="restart-server" />
-    <deployment>
-      <artifact name="currency-exchange:war">
-        <settings>
-          <option name="CONTEXT_PATH" value="/currency_exchange_war" />
-        </settings>
-      </artifact>
-    </deployment>
+    <deployment />
     <server-settings>
       <option name="BASE_DIRECTORY_NAME" value="3ba1cb43-1928-44f4-a4c0-82c553a8ffa5" />
     </server-settings>

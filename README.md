@@ -9,6 +9,32 @@ REST API для описания валют и обменных курсов. П
 
 Веб-интерфейс для проекта не подразумевается.
 
+## Запуск через IntelliJ Idea
+
+1. Перейти в меню конфигураций
+
+![step_1.png](images/step_1.png)
+
+2. Выбрать конфигурацию Tomcat 10.1.12
+
+![step_2.png](images/step_2.png)
+
+4. Выберете вкладку Deployment
+
+![step_3.png](images/step_3.png)
+
+5. Очистите все конфигурации
+
+![step_4.png](images/step_4.png)
+
+6. Добавьте новый артефакт currency-exchange:war
+
+![step_5.png](images/step_5.png)
+
+7. Во вкладке Before Launch выставьте билд, затем артифакт
+
+![img.png](images/step_6.png)
+
 ## Разработка
 
 - Сборка происходит в формат [War (WebArchive)](https://www.geeksforgeeks.org/servlet-war-file/)
