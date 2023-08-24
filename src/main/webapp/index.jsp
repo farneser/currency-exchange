@@ -3,7 +3,7 @@
 <head>
     <title>Web Api</title>
 </head>
-<body>
+<body style="display: flex; justify-content: space-around; flex-wrap: wrap;">
 
 <div class="currencies__list">
 
@@ -125,19 +125,21 @@
             Currency name
             <input name="name" type="text"/>
         </label>
+        <br>
         <label>
             Currency code
             <input name="code" type="text" maxlength="3" minlength="0"/>
         </label>
-
+        <br>
         <label>
             Currency sign
             <input name="sign" type="text"/>
         </label>
-
+        <br>
         <input type="submit"/>
     </form>
 </div>
+
 <div class="addExchangeRate">
     <iframe name="exchangeRatesFrame" id="exchangeRatesFrame" style="display: none;"></iframe>
 
@@ -167,19 +169,67 @@
             Base currency code
             <input name="baseCurrencyCode" type="text"/>
         </label>
+        <br>
         <label>
             Target currency code
             <input name="targetCurrencyCode" type="text"/>
         </label>
+        <br>
         <label>
             Exchange rate
-            <input name="rate" type="text" step="0.000001"/>
+            <input name="rate" type="number" step="0.000001"/>
         </label>
-
+        <br>
         <input type="submit"/>
     </form>
 </div>
 
-<div class="conversion">conversion</div>
+<div class="conversion">
+    <iframe name="conversionFrame" id="conversionFrame" style="display: none;"></iframe>
+
+    <script>
+        const conversionFrame = document.getElementById("conversionFrame");
+
+        conversionFrame.addEventListener("load", () => {
+            const response = JSON.parse(conversionFrame.contentDocument.body.innerText);
+
+            const keys = Object.keys(response);
+
+            const converted = document.getElementById("converted");
+
+            if (keys.length === 1 && keys[0] === "message") {
+                alert(response.message)
+                converted.innerText = "Converted: "
+                return;
+            }
+
+            converted.innerText = "Converted: " + response.amount + " " + response.baseCurrency.code + " to " + response.targetCurrency.code + " with  converted amount - " + response.convertedAmount;
+
+        })
+
+    </script>
+
+    <form action="exchange" target="conversionFrame" method="get">
+        <h1>Exchange Currencies</h1>
+
+        <label>
+            Base currency code
+            <input name="from" type="text"/>
+        </label>
+        <br>
+        <label>
+            Target currency code
+            <input name="to" type="text"/>
+        </label>
+        <br>
+        <label>
+            Amount
+            <input name="amount" type="number" step="0.000001"/>
+        </label>
+        <br>
+        <input type="submit"/>
+    </form>
+    <div id="converted">Converted:</div>
+</div>
 </body>
 </html>
