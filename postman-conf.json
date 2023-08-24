@@ -464,6 +464,60 @@
 			"response": []
 		},
 		{
+			"name": "/exchange",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"return array or error\", ()=>{",
+							"",
+							"    const body = pm.response.json;",
+							"",
+							"    if (pm.response.status == 500){",
+							"        pm.expect(body.message).have()",
+							"    }",
+							"",
+							"    if (pm.response.status == 200){",
+							"        pm.expect(pm.response.json()).to.be.an('array').but.not.an('object')",
+							"    }",
+							"",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/exchange?from=Rub&to=gbp&amount=100",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"exchange"
+					],
+					"query": [
+						{
+							"key": "from",
+							"value": "Rub"
+						},
+						{
+							"key": "to",
+							"value": "gbp"
+						},
+						{
+							"key": "amount",
+							"value": "100"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "/exchangeRates",
 			"event": [
 				{
@@ -552,13 +606,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/exchangeRate/BYNBTC",
+					"raw": "{{base_url}}/exchangeRate/USDEUR",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"exchangeRate",
-						"BYNBTC"
+						"USDEUR"
 					]
 				}
 			},
@@ -597,19 +651,24 @@
 					"urlencoded": [
 						{
 							"key": "rate",
+							"value": "18",
+							"type": "text"
+						},
+						{
+							"key": "rate",
 							"value": "15",
 							"type": "text"
 						}
 					]
 				},
 				"url": {
-					"raw": "{{base_url}}/exchangeRate/BYNBTC",
+					"raw": "{{base_url}}/exchangeRate/USDEUR",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"exchangeRate",
-						"BYNBTC"
+						"USDEUR"
 					]
 				}
 			},

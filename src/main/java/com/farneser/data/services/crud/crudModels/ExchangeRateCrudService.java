@@ -6,7 +6,7 @@ import com.farneser.data.exceptions.UniqueConstraintException;
 import com.farneser.data.exceptions.ValueMissingException;
 import com.farneser.data.models.Currency;
 import com.farneser.data.models.ExchangeRate;
-import com.farneser.data.services.crud.AppDbContext;
+import com.farneser.data.services.AppDbContext;
 import com.farneser.data.services.crud.CrudService;
 import com.farneser.data.services.crud.ICrud;
 

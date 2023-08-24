@@ -8,7 +8,7 @@ import com.farneser.data.exclusionStrategy.ExchangeRateVmExclusionStrategy;
 import com.farneser.data.models.Currency;
 import com.farneser.data.models.ErrorMessage;
 import com.farneser.data.models.ExchangeViewModel;
-import com.farneser.data.services.crud.AppDbContext;
+import com.farneser.data.services.AppDbContext;
 import com.farneser.data.services.crud.ICrud;
 import com.farneser.data.services.currencyCalculator.CurrencyCalculator;
 import com.farneser.data.services.pathFinder.ExchangeRatePathFinder;

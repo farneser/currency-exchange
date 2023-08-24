@@ -4,7 +4,7 @@ import com.farneser.data.exceptions.InternalServerException;
 import com.farneser.data.exceptions.NotFoundException;
 import com.farneser.data.exceptions.ValueMissingException;
 import com.farneser.data.models.ErrorMessage;
-import com.farneser.data.services.crud.AppDbContext;
+import com.farneser.data.services.AppDbContext;
 import com.google.gson.Gson;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;

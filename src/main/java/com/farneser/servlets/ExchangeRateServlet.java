@@ -3,7 +3,7 @@ package com.farneser.servlets;
 import com.farneser.data.exceptions.*;
 import com.farneser.data.models.ErrorMessage;
 import com.farneser.data.models.ExchangeRate;
-import com.farneser.data.services.crud.AppDbContext;
+import com.farneser.data.services.AppDbContext;
 import com.google.gson.Gson;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
