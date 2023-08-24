@@ -49,7 +49,7 @@ public class ExchangeRatesServlet extends BaseServlet {
             var rates = map.get("rate");
 
             if (baseCurrencyCodes == null || targetCurrencyCodes == null || rates == null) {
-                returnError(resp, ErrorMessage.FormFieldMissingError);
+                returnError(resp, ErrorMessage.ExchangeRatesFormFieldMissingError);
             } else {
                 var exchangeRate = context.exchangeRate.create(new ExchangeRate(baseCurrencyCodes[0], targetCurrencyCodes[0], BigDecimal.valueOf(Double.parseDouble(rates[0]))));
 
@@ -63,7 +63,7 @@ public class ExchangeRatesServlet extends BaseServlet {
         } catch (UniqueConstraintException e) {
             returnError(resp, ErrorMessage.ExchangeRateAlreadyExistsError);
         } catch (ValueMissingException e) {
-            returnError(resp, ErrorMessage.FormFieldMissingError);
+            returnError(resp, ErrorMessage.ExchangeRatesFormFieldMissingError);
         } catch (NotFoundException e) {
             returnError(resp, ErrorMessage.CurrencyCodeNotFound);
         }

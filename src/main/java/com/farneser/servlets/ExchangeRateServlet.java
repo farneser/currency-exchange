@@ -1,9 +1,6 @@
 package com.farneser.servlets;
 
-import com.farneser.data.exceptions.InternalServerException;
-import com.farneser.data.exceptions.NotFoundException;
-import com.farneser.data.exceptions.UniqueConstraintException;
-import com.farneser.data.exceptions.ValueMissingException;
+import com.farneser.data.exceptions.*;
 import com.farneser.data.models.ErrorMessage;
 import com.farneser.data.models.ExchangeRate;
 import com.farneser.data.services.crud.AppDbContext;
@@ -67,16 +64,15 @@ public class ExchangeRateServlet extends PatchServlet {
     protected void doPatch(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         var context = AppDbContext.getInstance();
 
-        var map = getBody(req);
-
         try {
+            var map = getBody(req);
 
             var rates = map.get("rate");
 
             var params = getParams(req);
 
             if (rates == null) {
-                returnError(resp, ErrorMessage.FormFieldMissingError);
+                returnError(resp, ErrorMessage.ExchangeRatePatchFormFieldMissingError);
             } else {
                 var exchangeRate = context.exchangeRate
                         .update(new ExchangeRate(
@@ -89,8 +85,8 @@ public class ExchangeRateServlet extends PatchServlet {
                 writer.write(exchangeRate.getSerialized());
                 writer.flush();
             }
-        } catch (ValueMissingException e) {
-            returnError(resp, ErrorMessage.FormFieldMissingError);
+        } catch (ValueMissingException | InvalidArgumentException e) {
+            returnError(resp, ErrorMessage.ExchangeRatePatchFormFieldMissingError);
         } catch (InternalServerException | UniqueConstraintException e) {
             returnError(resp, ErrorMessage.InternalServerError);
         } catch (NotFoundException e) {

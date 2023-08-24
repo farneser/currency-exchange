@@ -47,7 +47,7 @@ public class CurrenciesServlet extends BaseServlet {
             var signs = map.get("sign");
 
             if (codes == null || names == null || signs == null) {
-                returnError(resp, ErrorMessage.FormFieldMissingError);
+                returnError(resp, ErrorMessage.CurrenciesFormFieldMissingError);
             } else {
                 var currency = context.currency.create(new Currency(codes[0], names[0], signs[0]));
 
@@ -61,7 +61,7 @@ public class CurrenciesServlet extends BaseServlet {
         } catch (UniqueConstraintException e) {
             returnError(resp, ErrorMessage.CurrencyAlreadyExistsError);
         } catch (ValueMissingException e) {
-            returnError(resp, ErrorMessage.FormFieldMissingError);
+            returnError(resp, ErrorMessage.CurrenciesFormFieldMissingError);
         }
 
     }

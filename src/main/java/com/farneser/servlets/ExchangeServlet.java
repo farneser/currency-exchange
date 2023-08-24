@@ -35,7 +35,7 @@ public class ExchangeServlet extends BaseServlet {
         var amount = req.getParameter("amount");
 
         if (!ParamUtils.isExchangeParamsValid(from, to, amount)) {
-            returnError(resp, ErrorMessage.FormFieldMissingError);
+            returnError(resp, ErrorMessage.ExchangeFormFieldMissingError);
             return;
         }
 
@@ -71,7 +71,7 @@ public class ExchangeServlet extends BaseServlet {
         } catch (NotFoundException e) {
             returnError(resp, ErrorMessage.ExchangeCodesNotFound);
         } catch (ValueMissingException e) {
-            returnError(resp, ErrorMessage.FormFieldMissingError);
+            returnError(resp, ErrorMessage.ExchangeFormFieldMissingError);
         }
     }
 

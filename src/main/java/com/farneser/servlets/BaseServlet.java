@@ -1,5 +1,6 @@
 package com.farneser.servlets;
 
+import com.farneser.data.exceptions.InvalidArgumentException;
 import com.farneser.data.models.ErrorMessage;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,7 +23,7 @@ public abstract class BaseServlet extends HttpServlet {
         writer.flush();
     }
 
-    protected HashMap<String, List<String>> getBody(HttpServletRequest req) throws IOException {
+    protected HashMap<String, List<String>> getBody(HttpServletRequest req) throws IOException, InvalidArgumentException {
         var body = req.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
 
         var pairs = body.split("\\&");
@@ -30,21 +31,28 @@ public abstract class BaseServlet extends HttpServlet {
 
         for (var pair : pairs) {
             var fields = pair.split("=");
+            try {
 
-            var name = URLDecoder.decode(fields[0], StandardCharsets.UTF_8);
-            var value = URLDecoder.decode(fields[1], StandardCharsets.UTF_8);
 
-            if (result.containsKey(name)) {
-                var line = result.get(name);
+                var name = URLDecoder.decode(fields[0], StandardCharsets.UTF_8);
+                var value = URLDecoder.decode(fields[1], StandardCharsets.UTF_8);
 
-                line.add(value);
+                if (result.containsKey(name)) {
+                    var line = result.get(name);
 
-                result.put(name, line);
-            } else {
-                var line = new ArrayList<String>();
-                line.add(value);
-                result.put(name, line);
+                    line.add(value);
 
+                    result.put(name, line);
+                } else {
+                    var line = new ArrayList<String>();
+                    line.add(value);
+                    result.put(name, line);
+
+                }
+
+
+            } catch (ArrayIndexOutOfBoundsException e) {
+                throw new InvalidArgumentException();
             }
 
         }
