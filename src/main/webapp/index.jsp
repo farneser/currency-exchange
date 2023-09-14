@@ -263,14 +263,12 @@
 </script>
 
 <style>
-    /* Reset some default styles */
-    /* Reset some default styles */
+
     body, h1, h2, h3, p, ul, li, form, table {
         margin: 0;
         padding: 0;
     }
 
-    /* Set a background color and text color for the body */
     body {
         background-color: #f9f9f9;
         color: #333;
@@ -278,7 +276,6 @@
         line-height: 1.6;
     }
 
-    /* Style the header */
     header {
         background-color: #333;
         color: #fff;
@@ -287,7 +284,6 @@
         font-size: 24px;
     }
 
-    /* Style the main container */
     .container {
         display: flex;
         flex-wrap: wrap;
@@ -301,7 +297,6 @@
         margin-left: 2px;
     }
 
-    /* Style the individual sections */
     .flex__item {
         width: 300px;
         margin-bottom: 20px;
@@ -312,7 +307,6 @@
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
-    /* Style the tables */
     table {
         width: 100%;
         border-collapse: collapse;
@@ -327,7 +321,6 @@
         text-align: left;
     }
 
-    /* Style the forms */
     form {
         margin-top: 10px;
     }
@@ -351,18 +344,17 @@
         background-color: #333;
         color: #fff;
         border: none;
-        padding: 10px 20px; /* Adjusted to pixel-based size */
+        padding: 10px 20px;
         border-radius: 3px;
         cursor: pointer;
         font-size: 16px;
-        transition: background-color 0.3s ease; /* Add a smooth hover effect */
+        transition: background-color 0.3s ease;
     }
 
     input[type="submit"]:hover {
-        background-color: #555; /* Change the background color on hover */
+        background-color: #555;
     }
 
-    /* Style the iframes */
     iframe {
         width: 100%;
         height: 300px;
